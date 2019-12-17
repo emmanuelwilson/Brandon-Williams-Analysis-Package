@@ -9,16 +9,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Émmanuel Wilson
 
-distance = true;                                                          % Change to true if you wish to produce distance based figure
+distance = 1;                                                          % Change to true if you wish to produce distance based figure
 totaldist = 35;
-goodcells = msA23.SFPs(:,:,fullpassA23);
-mouse = 'A2JH3';
-con = 'B';
+goodcells = ms104.SFPs(:,:,fullpass104);
+mouse = '10JH3';
+con = 'A4';
 if distance
-    pref = distanceMatA23;
+    pref = distanceMat104;
     sname = 'Distance';
 else
-    pref = angleMat84;
+    pref = angleMat104;
     sname = 'Angle';
 end
 % % % goodcells(:,:,noPassed) = [];
@@ -30,22 +30,29 @@ for i = 1 : length(goodcells(1,1,:))
     mtemp(mind) = pref(i);
     mtemp(find(mtemp~=pref(i))) = 0;
     mask(:,:,i) = mtemp;
+%     BW(:,:,i) = bwperim(mtemp);
 end
 
-mask = sum(mask,3);
+% BW = max(BW,[],3);
+mask = max(mask,[],3);
 mask(find(mask == 0)) = NaN;
-figure
+% mask(find(BW)) = 365;
+figure(1)
 imagesc(mask,'AlphaData',~isnan(mask))
 if distance
-    colormap(jet)
+    t = jet(255);
+%     t = cat(1,t,[0 0 0]);
+    colormap(t)
     caxis([0 totaldist])
-else
-    colormap(hsv(8))
-    caxis([0 360])
+else    
+    t = hsv(255);
+%     t = cat(1,t,[0 0 0]);    
+    colormap(t)
+    caxis([0 361])    
 end
 colorbar
-set(gca,'color',0*[1 1 1]); 
+set(gca,'color',[0 0 0]); 
 title([mouse 'Context' con ' Preferred Firing ' sname],'FontSize',26)
-
+% 
 saveas(gcf,['Pref', sname,'TopologyContext', con,'_', mouse, '.fig'])
 saveas(gcf,['Pref', sname,'TopologyContext ', con, '_', mouse, '.eps'])
