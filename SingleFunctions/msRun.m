@@ -84,16 +84,16 @@ ms = msExtractFiring(ms);
 %% BEHAV STUFF
 
 %% Generate behav.m
-behav = msGenerateVideoObj(pwd,'behavCam');
+% behav = msGenerateVideoObj(pwd,'behavCam');
+% 
+% %% Select ROI and HSV for tracking
+% behav = msSelectPropsForTracking(behav); 
+% 
+% %% Extract position
+% trackLength = 200;%cm
+% behav = msExtractBehavoir(behav, trackLength); 
 
-%% Select ROI and HSV for tracking
-behav = msSelectPropsForTracking(behav); 
-
-%% Extract position
-trackLength = 200;%cm
-behav = msExtractBehavoir(behav, trackLength); 
-
-
+%%%
 
 % open('HD_180_deg.fig');
 % h = gcf; %current figure handle

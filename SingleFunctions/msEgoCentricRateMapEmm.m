@@ -44,8 +44,8 @@ ms.cell_y = NaN(ms.numFrames,length(ms.firing(1,:)));   %Y cooridnates of locati
 ms.cell_time = NaN(ms.numFrames,length(ms.firing(1,:)));%Time at when cell fired
 ms.HDfiring = ms.ind_fire;                              %Indices of neuron activity for head direction
 distanceBins = 0:1:37;                                  %set to look at half the length of the field which in our case is ~38cm (37.5 rounded up)
-mkdir EBCresults1Prob                                    %Create new folder within current directory
-direct = dir ('EBCresultsProb');                         %Access new folder
+mkdir EBCresultsPerfect                                   %Create new folder within current directory
+direct = dir ('EBCresultsPerfect');                         %Access new folder
 degBins = (-90:2:269);                                  %Angle bins for EBC metric polar plot
 degBins = degBins';
 degBins = deg2rad(degBins);
@@ -277,70 +277,70 @@ for cellNum = 1 : length(ms.firing(1,:))
             axis off
             axis square
             
-%             %EBC Metric
-%             avgcount = zeros(1,i);
-%             metric = zeros(1,180);
+            %EBC Metric
+            avgcount = zeros(1,i);
+            metric = zeros(1,180);
             subplot(n,4,c);
-% %             contour(rm)
-%             r = 0;
-%             for it = 1 : i
-%                 avgcount(1,it) = mean(rm(:,it));
-%                 if mod(it,2) == 0
-%                     r = it/2;
-%                     metric(1,r) = (avgcount(1,it-1)+avgcount(1,it))/2;
-%                 end
-%             end
-%             metric = metric';
-%             polarplot(degBins,metric)
-%             
-%             xs = metric(1:end-1).*cos(degBins(1:end-1)); % average
-%             ys = metric(1:end-1).*sin(degBins(1:end-1));
-%             
-%             coordlims=axis;
-%             
-%             ang_hd = atan2(mean(ys),mean(xs)); % mean direction
-%             
-%             mr = (cos(ang_hd)*sum(xs) + sin(ang_hd)*sum(ys)) / sum(metric(1:end-1)); % mean resultant length
-%             
-%             mag_hd = sqrt(sum(ys)^2+sum(xs)^2)/sqrt(sum(abs(ys))^2+sum(abs(xs))^2)*6.28; % for visualizations sake
-%             hold on;
-%             polarplot([ang_hd ang_hd ],[0 mr], 'r')
-%             hold off
-%             title('Wall Directionality')
-%             stat = ['MRL: ' num2str(mr) 'Angle : ' num2str(rad2deg(ang_hd))];
-%             text(0.2,coordlims(4),stat);
+%             contour(rm)
+            r = 0;
+            for it = 1 : i
+                avgcount(1,it) = mean(rm(:,it));
+                if mod(it,2) == 0
+                    r = it/2;
+                    metric(1,r) = (avgcount(1,it-1)+avgcount(1,it))/2;
+                end
+            end
+            metric = metric';
+            polarplot(degBins,metric)
+            
+            xs = metric(1:end-1).*cos(degBins(1:end-1)); % average
+            ys = metric(1:end-1).*sin(degBins(1:end-1));
+            
+            coordlims=axis;
+            
+            ang_hd = atan2(mean(ys),mean(xs)); % mean direction
+            
+            mr = (cos(ang_hd)*sum(xs) + sin(ang_hd)*sum(ys)) / sum(metric(1:end-1)); % mean resultant length
+            
+            mag_hd = sqrt(sum(ys)^2+sum(xs)^2)/sqrt(sum(abs(ys))^2+sum(abs(xs))^2)*6.28; % for visualizations sake
+            hold on;
+            polarplot([ang_hd ang_hd ],[0 mr], 'r')
+            hold off
+            title('Wall Directionality')
+            stat = ['MRL: ' num2str(mr) 'Angle : ' num2str(rad2deg(ang_hd))];
+            text(0.2,coordlims(4),stat);
                         
-%           Probability heatmap
-            imagesc(probMap)
-            colormap default
-            colorbar
+% %           Probability heatmap
+%             imagesc(probMap)
+%             colormap default
+%             colorbar
 
             %Save Results
-           saveas(gcf,['EBCresultsProb',num2str(cellNum),'EBC.jpg']); %saving figure as a picture file (.jpg) in the new folder "EBCresults"
+            saveas(gcf,['EBCresultsPerfect/',num2str(cellNum),'EBC.jpg']); %saving figure as a picture file (.jpg) in the new folder "EBCresults"
             ms.ind_fire = NaN(ms.numFrames,length(ms.firing(1,:))); %Indices of neuron activity/firing
             ms.cell_x = NaN(ms.numFrames,length(ms.firing(1,:)));   %X coordinate of locations where cell fired
             ms.cell_y = NaN(ms.numFrames,length(ms.firing(1,:)));   %Y cooridnates of locations where cell fired
             ms.cell_time = NaN(ms.numFrames,length(ms.firing(1,:)));%Time at when cell fired
             ms.HDfiring = ms.ind_fire;                              %Indices of neuron activity for head direction 
             ratemaps(:,:,cellNum) = rm;
-%             mrtot = mrtot + mr;
+            mrtot = mrtot + mr;
             freqFire(1,cellNum) = length(ifire);
-%             mrall(1,cellNum) = mr;
+            mrall(1,cellNum) = mr;
             clf
         end
     end
 end
 % out.mravg = mrtot/counter;
 % out.mrall = mrall;
-out.freqFire = freqFire;
-out.freqMax = freqMax;
-freqFire = freqFire/(length(frameMap(:,1))/30);
-out.rm = ratemaps;
-histogram(freqFire)
-title('average cell firing rate at 0.1 treshold')
-ylabel('Number of Cells')
-xlabel('frequency (Hz)')
-savefig('Thresh0.4CNMFE_FreqHist.fig')
+% out.freqFire = freqFire;
+% out.freqMax = freqMax;
+% freqFire = freqFire/(length(frameMap(:,1))/30);
+% out.rm = ratemaps;
+% histogram(freqFire)
+% title('average cell firing rate at 0.1 treshold')
+% ylabel('Number of Cells')
+% xlabel('frequency (Hz)')
+% savefig('Thresh0.4CNMFE_FreqHist.fig')
 % figure
 % histogram(mrall)
 % title('MRL distribution at 0.1 treshold')

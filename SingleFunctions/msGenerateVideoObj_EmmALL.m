@@ -105,7 +105,7 @@ function ms = msGenerateVideoObj_EmmALL(dirName, filePrefix)
                 sysClock = [sysClock; sysClock(length(sysClock))+sysClocktemp];
                 buffer1 = [buffer1; buffer1temp];
             end
-            if mod(i,2)
+            if frameNum(1,1)==1
                 frameTot1 = frameTot1 + frameNum(length(frameNum));
                 frameTot0 = frameTot0 + frameNum(length(frameNum)-1);
             else
