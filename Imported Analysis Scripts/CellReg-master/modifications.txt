@@ -1,0 +1,6 @@
+CellReg Modifications:
+
+line 701 : set -> sufficient_correlation_centroids=0.2 to sufficient_correlation_centroids=-inf;
+line 702 : set -> sufficient_correlation_footprints= 0.2 to sufficient_correlation_footprints=-inf;;
+
+ 
