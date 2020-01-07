@@ -16,7 +16,7 @@ for i = 3 : length(folder)
             
             %Align data to Anchor points
             %Generate raster plots for all trials and all cells
-            [Calcium, TrialInds,rawSep,rawCalcium] = TouchRaster_V2(events,ms,1,1,1,0,1,0);
+            [Calcium, TrialInds,rawSep,rawCalcium] = TouchRaster_V2(msTouchSync.events,ms,1,1,1,0,1,0);
             save('TouchRasterResults.mat','Calcium','TrialInds')
             save('UncutTraces.mat','rawSep','rawCalcium')
             load('minmax.mat')
@@ -26,8 +26,8 @@ for i = 3 : length(folder)
             
             %Find Reliable Cell
             %Cells that pass criteria
-            ShuffledCrit = TouchScreenShuffle(ms,events,TrialInds);
-            ShuffledCritSep = TouchScreenShuffleSeperation_V2(SepDelay,SepFront,SepBack,ms,TrialInds,events);
+            ShuffledCrit = TouchScreenShuffle(ms,msTouchSync.events,TrialInds);
+            ShuffledCritSep = TouchScreenShuffleSeperation_V2(SepDelay,SepFront,SepBack,ms,TrialInds,msTouchSync.events);
             save('ShuffledCrit.mat','ShuffledCrit','ShuffledCritSep')
             
             %Figure1: Seqence of population data
