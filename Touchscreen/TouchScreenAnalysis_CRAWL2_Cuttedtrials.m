@@ -10,6 +10,7 @@ for i = 3 : length(folder)
         subfolder = dir(subdir);
         fnames = {subfolder.name};
         if ~isempty(find(strcmp(fnames,'CuttedTrials.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp.dat',1),1)) && isempty(find(strcmp(fnames,'msDeconvolved.mat'),1))
+        if ~isempty(find(strcmp(fnames,'CuttedTrials.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp.dat',1),1)) && ~isempty(find(strcmp(fnames,'msDeconvolved.mat'),1))
             cd([pwd,'/',folder(i).name]);
             load('msDeconvolved.mat')
             load('CuttedTrials.mat')
