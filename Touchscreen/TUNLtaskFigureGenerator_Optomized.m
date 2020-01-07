@@ -34,6 +34,19 @@ Dcorcorrectmean = Dcorcorrectmean(rastsort,:,:);
 Dcorincorrectmean =nanmean(Calcium.DincorrectCor(ShuffledCrit.DcorrectCells,:,:),3);
 Dcorincorrectmean = Dcorincorrectmean(rastsort,:,:);
 
+meanmaxvalc = max(max(Dcorrectmean));
+meanmaxvali = max(max(Dincorrectmean));
+meanmaxvalcc = max(max(Dcorcorrectmean));
+meanmaxvalic = max(max(Dcorincorrectmean));
+
+meanminvalc = min(min(Dcorrectmean));
+meanminvali = min(min(Dincorrectmean));
+meanminvalcc = min(min(Dcorcorrectmean));
+meanminvalic = min(min(Dcorincorrectmean));
+
+meanmaxval = max([meanmaxvalc,meanmaxvali,meanmaxvalic,meanmaxvalcc]);
+meanminval = max([meanminvalc,meanminvali,meanminvalic,meanminvalcc]);
+
 figure(1)
 colormap parula
 subplot(2,2,1)
@@ -47,6 +60,7 @@ ylabel('Cell')
 xlabel('Time (Seconds)')
 title('Delay: Correct Mean Fluorescence')
 colorbar
+clim([meanminval meanmaxval])
 subplot(2,2,2)
 imagesc(Dincorrectmean)
 if ~isempty(Dincorrectmean)
@@ -58,6 +72,7 @@ ylabel('Cell')
 xlabel('Time (Seconds)')
 title('Delay: Incorrect Mean Fluorescence')
 colorbar
+clim([meanminval meanmaxval])
 subplot(2,2,3)
 imagesc(Dcorcorrectmean)
 if ~isempty(Dcorcorrectmean)
@@ -69,6 +84,7 @@ ylabel('Cell')
 xlabel('Time (Seconds)')
 title('Delay: Correct Correction Mean Fluorescence')
 colorbar
+clim([meanminval meanmaxval])
 subplot(2,2,4)
 imagesc(Dcorincorrectmean)
 if ~isempty(Dcorincorrectmean)
@@ -80,6 +96,7 @@ ylabel('Cell')
 xlabel('Time (Seconds)')
 title('Delay: Incorrect Correction Mean Fluorescence')
 colorbar
+clim([meanminval meanmaxval])
 saveas(figure(1),'Delay/Delay_PassedCriteria.fig')
 
 if isempty(Dcorincorrectmean) || (nansum(nansum(Dcorincorrectmean))) == 0
@@ -532,6 +549,19 @@ for i = 1 : length(choices)
     else
         meanicorDpop = [];
     end
+    maxvalc = max(max(meancDpop));
+    maxvali = max(max(meaniDpop));
+    maxvalcc = max(max(meanccorDpop));
+    maxvalic = max(max(meanicorDpop));
+    
+    minvalc = min(min(meancDpop));
+    minvali = min(min(meaniDpop));
+    minvalcc = min(min(meanccorDpop));
+    minvalic = min(min(meanicorDpop));
+    
+    maxval = max([maxvalc,maxvali,maxvalic,maxvalcc]);
+    minval = max([minvalc,minvali,minvalic,minvalcc]);
+    
     figure(1)
     subplot(2,2,1)
     imagesc(meancDpop)
@@ -543,6 +573,8 @@ for i = 1 : length(choices)
     xlabel('Time(Seconds)')
     ylabel('Cell ID')
     title('Delay: Correct Mean Fluorescence')
+    colorbar
+    clim([minval maxval])
     subplot(2,2,2)
     imagesc(meaniDpop)
     if ~isempty(meaniDpop)
@@ -555,6 +587,8 @@ for i = 1 : length(choices)
     title('Delay: Incorrect Mean Fluorescence')
     subplot(2,2,3)
     imagesc(meanccorDpop)
+    colorbar
+    clim([minval maxval])
     if ~isempty(meanccorDpop)
         xticks(1:fps:length(meanccorDpop(1,:)));
         xticklabels(Frame2SecLabels(length(meanccorDpop(1,:)),30,ticmultiplier));
@@ -565,6 +599,8 @@ for i = 1 : length(choices)
     title('Delay: Correct Correction Mean Fluorescence')
     subplot(2,2,4)
     imagesc(meanicorDpop)
+    colorbar
+    clim([minval maxval])
     if ~isempty(meanicorDpop)
         xticks(1:fps:length(meanicorDpop(1,:)));
         xticklabels(Frame2SecLabels(length(meanicorDpop(1,:)),30,ticmultiplier));
