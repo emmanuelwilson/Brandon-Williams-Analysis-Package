@@ -19,7 +19,7 @@ warning('off','curvefit:fittype:sethandles:WeibullxMustBePositive');
 warning('off','stats:glmfit:BadScaling');
 warning('off','MATLAB:nargchk:deprecated');
 
-FOVsize = 37;
+FOVsize = 21;
 
 %% Setup & Parse
 p = inputParser;
@@ -40,13 +40,14 @@ p.parse(varargin{:});
 distanceBins = 0:1:FOVsize;                                  %set to look at half the length of the field which in our case is ~38cm (37.5 rounded up)
 counter = 0 ;                                           %counter
 fps = 30;                                               %Frames per second
+cutoff = 300;
 
 %% Get structure of environment
 %Identify where the bounds of the environment are located. Through a subfunction that allows the user to click
 %on a plot of the positional data to indicate where the corners of the environment are located.
 
 %% Calculate distances
-if ebcstats == 0
+if isempty(ebcstats)
     QP = findEdges(tracking);
 else
     QP = ebcstats.QP;
@@ -73,7 +74,7 @@ distanceBins = distanceBins(1:end-1);                                   %itterat
 
 % bring back to original dims
 occ = occ(:,1:end-1); occ=occ';
-cutout = find(occ<25);
+cutout = find(occ<cutoff);
 occ(cutout) = 0;
 
 %% Smoothing
