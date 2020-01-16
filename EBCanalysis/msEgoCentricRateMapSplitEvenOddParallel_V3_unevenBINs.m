@@ -19,7 +19,6 @@ if dimX > dimY
 else
     FOVsize = round(dimX/2);
 end
-name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize)];
 %% Get behavior information
 % DistBinSize = 1.2;
 % DegBinSize = 6;
