@@ -40,7 +40,6 @@ p.parse(varargin{:});
 distanceBins = 0:1:FOVsize;                                  %set to look at half the length of the field which in our case is ~38cm (37.5 rounded up)
 counter = 0 ;                                           %counter
 fps = 30;                                               %Frames per second
-cutoff = 300;
 
 %% Get structure of environment
 %Identify where the bounds of the environment are located. Through a subfunction that allows the user to click
