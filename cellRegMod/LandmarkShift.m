@@ -15,7 +15,13 @@ sessions = {folder(3:end).name};                                            %Sep
 sessions = sessions(3:end);
 Shift = [];
 count = 0;
-
+tempsessions = sessions;
+for i = 1 : length(sessions)
+    if str2num(sessions{i}(3:end-3)) ~= i
+        tempsessions{str2num(sessions{i}(3:end-3))} = sessions{i};
+    end    
+end
+sessions = tempsessions;
 for i = 1 : length(sessions)-1
     if isempty(sessions(i))                                                %if contents empty skip itteration
         continue
