@@ -19,7 +19,6 @@ if dimX > dimY
 else
     FOVsize = round(dimX/2);
 end
-name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'LeftSide'];
 name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize)];
 %% Get behavior information
 ratemaps = zeros(FOVsize/DistBinSize,360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values

@@ -14,7 +14,7 @@ function [out, detailed]= msEgoCentricRateMapSplitEvenOddParallelSHUFFLE_V5(ms,H
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Author Emmanuel Wilson, modified from Jake Hinman
 
-name = ['EBCevenOddSplitParallelDeconvolved_CircSHUFFLEDonut3_100ittD',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'mat'];
+name = ['EBCevenOddSplitParallelDeconvolved_CircSHUFFLEDonut3_100ittD',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'.mat'];
 
 if dimX > dimY
     FOVsize = round(dimY/2);
