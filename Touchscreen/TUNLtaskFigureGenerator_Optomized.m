@@ -10,7 +10,7 @@ ticmultiplier = 2;
 %Step1: Align data to Anchor points
 %Generate raster plots for all trials and all cells
 
-[Calcium, TrialInds,rawSep,rawCalcium] = TouchRaster_V3(msTouchSync.events,ms,1,1,1,0,1,0);
+[Calcium, TrialInds,rawSep,rawCalcium] = TouchRaster_V3(msTouchSync.events,ms,1,1,1,1,1,1);
 save('TouchRasterResults.mat','Calcium','TrialInds')
 save('UncutTraces.mat','rawSep','rawCalcium')
 load('minmax.mat')
@@ -18,10 +18,10 @@ load('SepDelay.mat')
 load('SepFront.mat')
 load('SepBack.mat')
 
-%Step2: Find Reliable Cell
-%Cells that pass criteria
-ShuffledCrit = TouchScreenShuffle(ms,events,TrialInds);
-ShuffledCritSep = TouchScreenShuffleSeperation_V2(SepDelay,SepFront,SepBack,ms,TrialInds,events);
+% Step2: Find Reliable Cell
+% Cells that pass criteria
+ShuffledCrit = TouchScreenShuffle(ms,msTouchSync.events,TrialInds);
+ShuffledCritSep = TouchScreenShuffleSeperation_V2(SepDelay,SepFront,SepBack,ms,TrialInds,msTouchSync.events);
 save('ShuffledCrit.mat','ShuffledCrit','ShuffledCritSep')
 
 %Figure1: Seqence of population data
@@ -50,8 +50,8 @@ meanminval = max([meanminvalc,meanminvali,meanminvalic,meanminvalcc]);
 figure(1)
 colormap parula
 subplot(2,2,1)
-imagesc(Dcorrectmean)
 if ~isempty(Dcorrectmean)
+    imagesc(Dcorrectmean)
     xticks(1:fps:length(Dcorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Dcorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Dcorrectmean(:,1))/10):length(Dcorrectmean(:,1)));
@@ -60,10 +60,10 @@ ylabel('Cell')
 xlabel('Time (Seconds)')
 title('Delay: Correct Mean Fluorescence')
 colorbar
-clim([meanminval meanmaxval])
+caxis([meanminval meanmaxval])
 subplot(2,2,2)
-imagesc(Dincorrectmean)
 if ~isempty(Dincorrectmean)
+    imagesc(Dincorrectmean)
     xticks(1:fps:length(Dincorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Dincorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Dincorrectmean(:,1))/10):length(Dincorrectmean(:,1)));
@@ -72,10 +72,10 @@ ylabel('Cell')
 xlabel('Time (Seconds)')
 title('Delay: Incorrect Mean Fluorescence')
 colorbar
-clim([meanminval meanmaxval])
+caxis([meanminval meanmaxval])
 subplot(2,2,3)
-imagesc(Dcorcorrectmean)
 if ~isempty(Dcorcorrectmean)
+    imagesc(Dcorcorrectmean)
     xticks(1:fps:length(Dcorcorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Dcorcorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Dcorcorrectmean(:,1))/10):length(Dcorcorrectmean(:,1)));
@@ -84,10 +84,10 @@ ylabel('Cell')
 xlabel('Time (Seconds)')
 title('Delay: Correct Correction Mean Fluorescence')
 colorbar
-clim([meanminval meanmaxval])
+caxis([meanminval meanmaxval])
 subplot(2,2,4)
-imagesc(Dcorincorrectmean)
 if ~isempty(Dcorincorrectmean)
+    imagesc(Dcorincorrectmean)
     xticks(1:fps:length(Dcorincorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Dcorincorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Dcorincorrectmean(:,1))/10):length(Dcorincorrectmean(:,1)));
@@ -96,7 +96,7 @@ ylabel('Cell')
 xlabel('Time (Seconds)')
 title('Delay: Incorrect Correction Mean Fluorescence')
 colorbar
-clim([meanminval meanmaxval])
+caxis([meanminval meanmaxval])
 saveas(figure(1),'Delay/Delay_PassedCriteria.fig')
 
 if isempty(Dcorincorrectmean) || (nansum(nansum(Dcorincorrectmean))) == 0
@@ -121,8 +121,8 @@ end
 figure(1)
 colormap parula
 subplot(2,2,1)
-imagesc(Fcorrectmean)
 if ~isempty(Fcorrectmean)
+    imagesc(Fcorrectmean)
     xticks(1:fps:length(Fcorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Fcorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Fcorrectmean(:,1))/10):length(Fcorrectmean(:,1)));
@@ -132,8 +132,8 @@ xlabel('Time (Seconds)')
 title('Front Anchored: Correct Mean Fluorescence')
 colorbar
 subplot(2,2,2)
-imagesc(Fincorrectmean)
 if ~isempty(Fincorrectmean)
+    imagesc(Fincorrectmean)
     xticks(1:fps:length(Fincorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Fincorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Fincorrectmean(:,1))/10):length(Fincorrectmean(:,1)));
@@ -143,8 +143,8 @@ xlabel('Time (Seconds)')
 title('Front Anchored: Incorrect Mean Fluorescence')
 colorbar
 subplot(2,2,3)
-imagesc(Fcorcorrectmean)
 if ~isempty(Fcorcorrectmean)
+    imagesc(Fcorcorrectmean)
     xticks(1:fps:length(Fcorcorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Fcorcorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Fcorcorrectmean(:,1))/10):length(Fcorcorrectmean(:,1)));
@@ -154,8 +154,8 @@ xlabel('Time (Seconds)')
 title('Front Anchored: Correct Correction Mean Fluorescence')
 colorbar
 subplot(2,2,4)
-imagesc(Fcorincorrectmean)
 if ~isempty(Fcorincorrectmean)
+    imagesc(Fcorincorrectmean)
     xticks(1:fps:length(Fcorincorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Fcorincorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Fcorincorrectmean(:,1))/10):length(Fcorincorrectmean(:,1)));
@@ -184,9 +184,9 @@ end
 figure(1)
 colormap parula
 subplot(2,2,1)
-imagesc(Bcorrectmean)
-vline(length(Bcorrectmean(1,:)) - 450,'g')
 if ~isempty(Bcorrectmean)
+    imagesc(Bcorrectmean)
+    vline(length(Bcorrectmean(1,:)) - 450,'g')
     xticks(1:fps:length(Bcorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Bcorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Bcorrectmean(:,1))/10):length(Bcorrectmean(:,1)));
@@ -196,9 +196,9 @@ xlabel('Time (Seconds)')
 title('Back Anchored: Correct Mean Fluorescence')
 colorbar
 subplot(2,2,2)
-imagesc(Bincorrectmean)
-vline(length(Bincorrectmean(1,:)) - 450,'r')
 if ~isempty(Bincorrectmean)
+    imagesc(Bincorrectmean)
+    vline(length(Bincorrectmean(1,:)) - 450,'r')
     xticks(1:fps:length(Bincorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Bincorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Bincorrectmean(:,1))/10):length(Bincorrectmean(:,1)));
@@ -208,9 +208,9 @@ xlabel('Time (Seconds)')
 title('Back Anchored: Incorrect Mean Fluorescence')
 colorbar
 subplot(2,2,3)
-imagesc(Bcorcorrectmean)
-vline(length(Bcorcorrectmean(1,:)) - 450,'g')
 if ~isempty(Bcorcorrectmean)
+    imagesc(Bcorcorrectmean)
+    vline(length(Bcorcorrectmean(1,:)) - 450,'g')
     xticks(1:fps:length(Bcorcorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Bcorcorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Bcorcorrectmean(:,1))/10):length(Bcorcorrectmean(:,1)));
@@ -220,8 +220,8 @@ xlabel('Time (Seconds)')
 title('Back Anchored: Correct Correction Mean Fluorescence')
 colorbar
 subplot(2,2,4)
-imagesc(Bcorincorrectmean)
 if ~isempty(Bcorincorrectmean)
+    imagesc(Bcorincorrectmean)
     xticks(1:fps:length(Bcorincorrectmean(1,:)));
     xticklabels(Frame2SecLabels(length(Bcorincorrectmean(1,:)),30,ticmultiplier));
     yticks(1:round(length(Bcorincorrectmean(:,1))/10):length(Bcorincorrectmean(:,1)));
@@ -246,8 +246,8 @@ end
 figure(1)
 colormap parula
 subplot(2,2,1)
-plot(Dcorrectpop)
 if ~isempty(Dcorrectpop)
+    plot(Dcorrectpop)
     xticks(1:fps:length(Dcorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Dcorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Dcorrectpop(:,1))/3):length(Dcorrectpop(:,1)));
@@ -257,8 +257,8 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Delay: Correct Population Level Fluorescence')
 subplot(2,2,2)
-plot(Dincorrectpop)
 if ~isempty(Dincorrectpop)
+    plot(Dincorrectpop)
     xticks(1:fps:length(Dincorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Dincorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Dincorrectpop(:,1))/3):length(Dincorrectpop(:,1)));
@@ -268,8 +268,8 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Delay: Incorrect Population Level Fluorescence')
 subplot(2,2,3)
-plot(Dcorcorrectpop)
 if ~isempty(Dcorcorrectpop)
+    plot(Dcorcorrectpop)
     xticks(1:fps:length(Dcorcorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Dcorcorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Dcorcorrectpop(:,1))/3):length(Dcorcorrectpop(:,1)));
@@ -279,8 +279,8 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Delay: Correct Correction Population Level Fluorescence')
 subplot(2,2,4)
-plot(Dcorincorrectpop)
 if ~isempty(Dcorincorrectpop)
+    plot(Dcorincorrectpop)
     xticks(1:fps:length(Dcorincorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Dcorincorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Dcorincorrectpop(:,1))/3):length(Dcorincorrectpop(:,1)));
@@ -303,8 +303,8 @@ end
 figure(1)
 colormap parula
 subplot(2,2,1)
-plot(Fcorrectpop)
 if ~isempty(Fcorrectpop)
+    plot(Fcorrectpop)
     xticks(1:fps:length(Fcorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Fcorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Fcorrectpop(:,1))/3):length(Fcorrectpop(:,1)));
@@ -314,8 +314,8 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Front Anchored: Correct Population Level Fluorescence')
 subplot(2,2,2)
-plot(Fincorrectpop)
 if ~isempty(Fincorrectpop)
+    plot(Fincorrectpop)
     xticks(1:fps:length(Fincorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Fincorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Fincorrectpop(:,1))/3):length(Fincorrectpop(:,1)));
@@ -325,8 +325,8 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Front Anchored: Incorrect Population Level Fluorescence')
 subplot(2,2,3)
-plot(Fcorcorrectpop)
 if ~isempty(Fcorcorrectpop)
+    plot(Fcorcorrectpop)
     xticks(1:fps:length(Fcorcorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Fcorcorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Fcorcorrectpop(:,1))/3):length(Fcorcorrectpop(:,1)));
@@ -336,8 +336,8 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Front Anchored: Correct Correction Population Level Fluorescence')
 subplot(2,2,4)
-plot(Fcorincorrectpop)
 if ~isempty(Fcorincorrectpop)
+    plot(Fcorincorrectpop)
     xticks(1:fps:length(Fcorincorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Fcorincorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Fcorincorrectpop(:,1))/3):length(Fcorincorrectpop(:,1)));
@@ -361,9 +361,9 @@ end
 figure(1)
 colormap parula
 subplot(2,2,1)
-plot(Bcorrectpop)
-vline(length(Bcorrectpop) - 450,'g')
 if ~isempty(Bcorrectpop)
+    plot(Bcorrectpop)
+    vline(length(Bcorrectpop) - 450,'g')
     xticks(1:fps:length(Bcorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Bcorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Bcorrectpop(:,1))/3):length(Bcorrectpop(:,1)));
@@ -373,8 +373,8 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Back Anchored: Correct Population Level Fluorescence')
 subplot(2,2,2)
-plot(Bincorrectpop)
 if ~isempty(Bincorrectpop)
+    plot(Bincorrectpop)
     xticks(1:fps:length(Bincorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Bincorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Bincorrectpop(:,1))/3):length(Bincorrectpop(:,1)));
@@ -384,9 +384,9 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Back Anchored: Incorrect Population Level Fluorescence')
 subplot(2,2,3)
-plot(Bcorcorrectpop)
-vline(length(Bcorcorrectpop) - 450,'g')
 if ~isempty(Bcorcorrectpop)
+    plot(Bcorcorrectpop)
+    vline(length(Bcorcorrectpop) - 450,'g')
     xticks(1:fps:length(Bcorcorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Bcorcorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Bcorcorrectpop(:,1))/3):length(Bcorcorrectpop(:,1)));
@@ -396,8 +396,8 @@ ylim([0 1])
 xlabel('Time (Seconds)')
 title('Back Anchored: Correct Correction Population Level Fluorescence')
 subplot(2,2,4)
-plot(Bcorincorrectpop)
 if ~isempty(Bcorincorrectpop)
+    plot(Bcorincorrectpop)
     xticks(1:fps:length(Bcorincorrectpop(1,:)));
     xticklabels(Frame2SecLabels(length(Bcorincorrectpop(1,:)),30,ticmultiplier));
     yticks(0:round(length(Bcorincorrectpop(:,1))/3):length(Bcorincorrectpop(:,1)));
@@ -560,55 +560,60 @@ for i = 1 : length(choices)
     minvalic = min(min(meanicorDpop));
     
     maxval = max([maxvalc,maxvali,maxvalic,maxvalcc]);
-    minval = max([minvalc,minvali,minvalic,minvalcc]);
+    minval = min([minvalc,minvali,minvalic,minvalcc]);
     
     figure(1)
     subplot(2,2,1)
-    imagesc(meancDpop)
     if ~isempty(meancDpop)
+        imagesc(meancDpop)
         xticks(1:fps:length(meancDpop(1,:)));
         xticklabels(Frame2SecLabels(length(meancDpop(1,:)),30,ticmultiplier));
         yticks(1:round(length(meancDpop(:,1))/10):length(meancDpop(:,1)));
+        xlabel('Time(Seconds)')
+        ylabel('Cell ID')
+        title('Delay: Correct Mean Fluorescence')
+        colorbar
+        caxis([minval maxval])
     end
-    xlabel('Time(Seconds)')
-    ylabel('Cell ID')
-    title('Delay: Correct Mean Fluorescence')
-    colorbar
-    clim([minval maxval])
+    
     subplot(2,2,2)
-    imagesc(meaniDpop)
     if ~isempty(meaniDpop)
+        imagesc(meaniDpop)
         xticks(1:fps:length(meaniDpop(1,:)));
         xticklabels(Frame2SecLabels(length(meaniDpop(1,:)),30,ticmultiplier));
         yticks(1:round(length(meaniDpop(:,1))/10):length(meaniDpop(:,1)));
+        xlabel('Time(Seconds)')
+        ylabel('Cell ID')
+        title('Delay: Incorrect Mean Fluorescence')
     end
-    xlabel('Time(Seconds)')
-    ylabel('Cell ID')
-    title('Delay: Incorrect Mean Fluorescence')
+    
     subplot(2,2,3)
-    imagesc(meanccorDpop)
-    colorbar
-    clim([minval maxval])
     if ~isempty(meanccorDpop)
+        imagesc(meanccorDpop)
+        colorbar
+        caxis([minval maxval])
         xticks(1:fps:length(meanccorDpop(1,:)));
         xticklabels(Frame2SecLabels(length(meanccorDpop(1,:)),30,ticmultiplier));
         yticks(1:round(length(meanccorDpop(:,1))/10):length(meanccorDpop(:,1)));
+        xlabel('Time(Seconds)')
+        ylabel('Cell ID')
+        title('Delay: Correct Correction Mean Fluorescence')
     end
-    xlabel('Time(Seconds)')
-    ylabel('Cell ID')
-    title('Delay: Correct Correction Mean Fluorescence')
+    
     subplot(2,2,4)
-    imagesc(meanicorDpop)
-    colorbar
-    clim([minval maxval])
+    
     if ~isempty(meanicorDpop)
+        imagesc(meanicorDpop)
+        colorbar
+        caxis([minval maxval])
         xticks(1:fps:length(meanicorDpop(1,:)));
         xticklabels(Frame2SecLabels(length(meanicorDpop(1,:)),30,ticmultiplier));
         yticks(1:round(length(meanicorDpop(:,1))/10):length(meanicorDpop(:,1)));
+        xlabel('Time(Seconds)')
+        ylabel('Cell ID')
+        title('Delay: Incorrect Correction Mean Fluorescence')
     end
-    xlabel('Time(Seconds)')
-    ylabel('Cell ID')
-    title('Delay: Incorrect Correction Mean Fluorescence')
+    
     saveas(gcf,[pwd,'/Delay/ChoiceSeperation_',num2str(choices(i)),'_PopulationRasterPlot.jpg']);
     clf    
 end
@@ -1065,5 +1070,5 @@ end
 
 %-------------------STEP 5------------------------
 
-out = step_5(ms,behav,events,groupID,item_name,eventTime,eventInd); 
+out = step_5(ms,behav,msTouchSync.events,groupID,item_name,eventTime,eventInd); 
 
