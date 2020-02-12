@@ -89,7 +89,7 @@ dis = dis*pixX;                                                             %Con
 dis = circshift(dis,90,2);                                                  %shifts values by 90 degrees
 
 if frameMap(length(frameMap)) < length(ms.FiltTraces)
-    ms.FiltTraces = ms.FiltTraces(frameMap);   %Sink trace if not already sinked
+    ms.FiltTraces = ms.FiltTraces(1:length(frameMap),:);
 end
 
 firing = ms.FiltTraces;

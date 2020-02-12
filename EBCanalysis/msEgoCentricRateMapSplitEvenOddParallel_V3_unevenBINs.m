@@ -19,7 +19,7 @@ if dimX > dimY
 else
     FOVsize = round(dimX/2);
 end
-name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'nocutoff'];
+name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize)];
 
 %% Get behavior information
 % DistBinSize = 1.2;
@@ -105,6 +105,7 @@ dis = circshift(dis,90,2);                                                  %shi
 
 
 %Loop through every cell, extract and analize firing instances and boundary locations
+parfor ctrack = 1 : length(cellIndex)
     cellNum = cellIndex(ctrack);
     mspar = ms;
     processed = false;
