@@ -34,7 +34,7 @@ for i = 1 : length(corrangles(:,1,1))
                 mincorr(maxpeak-window:maxpeak+window) = [];
                 minval = sum(mincorr)-(length(mincorr)*minamp);
             end
-            ratios(i,y(j),x(j)) = minval/maxval;
+            ratios(i,y(j),x(j)) = maxval/minval;
         end
     end
 end
