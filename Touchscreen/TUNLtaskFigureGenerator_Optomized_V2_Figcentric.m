@@ -1070,5 +1070,5 @@ end
 
 %-------------------STEP 5------------------------
 
-out = step_5(ms,behav,msTouchSync.events,groupID,item_name,eventTime,eventInd); 
+% % % out = step_5(ms,behav,msTouchSync.events,groupID,item_name,eventTime,eventInd); 
 
