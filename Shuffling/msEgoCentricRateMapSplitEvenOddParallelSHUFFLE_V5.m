@@ -14,7 +14,7 @@ function [out, detailed]= msEgoCentricRateMapSplitEvenOddParallelSHUFFLE_V5(ms,H
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Author Emmanuel Wilson, modified from Jake Hinman
 
-name = ['EBCevenOddSplitParallelDeconvolved_CircSHUFFLEDonut3_100ittD',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'.mat'];
+name = ['EBCevenOddSplitParallelDeconvolved_CircSHUFFLEDonut3_100ittD',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'700.mat'];
 
 if dimX > dimY
     FOVsize = round(dimY/2);
@@ -35,7 +35,7 @@ fps = 30;                                               %Frames per second
 spf = 1/fps;                                            %Seconds per frame
 ms.timestamp = frameMap.*spf;                           %time stamp in seconds
 minDist = [1:2];
-cutoff = 300;
+cutoff = 700;
 %% FrameMap special case correction
 %IF SPECIAL CASE APPEARS MAKE SURE TO CHECK framemap, ms AND SINKdata ARE
 %CORRECT
@@ -93,7 +93,7 @@ if frameMap(length(frameMap)) < length(ms.FiltTraces)
 end
 
 firing = ms.FiltTraces;
-parfor itteration = 1 : 100
+parfor itteration = 1 : 1000
     shuffledFiring = CShuffle(firing);                                  %Shuffle firing peaks 
     distanceBinspar = distanceBins;
     mrlitt = zeros(length(firing(1,:)),1);
