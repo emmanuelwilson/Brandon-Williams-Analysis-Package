@@ -30,8 +30,8 @@ vline(0,'k')
 smallangles = angles(:,1);
 bigangles = angles(:,2);
 hold on
-scatter(smallradius*cos(smallangles),smallradius*sin(smallangles))
-scatter(bigradius*cos(bigangles),bigradius*sin(bigangles))
+% scatter(smallradius*cos(smallangles),smallradius*sin(smallangles))
+% scatter(bigradius*cos(bigangles),bigradius*sin(bigangles))
 
 x = cat(2,smallradius*cos(smallangles),bigradius*cos(bigangles));
 y = cat(2,smallradius*sin(smallangles),bigradius*sin(bigangles));

@@ -49,59 +49,59 @@ for i = 1 : length(folder)
 % %   load(folder(ind(i)).name, 'ms','frameMap','position_track','HD_180_deg_total','SINKdata','HDdeg')        
     load(folder(i).name, 'ms','frameMap','position_track','HD_180_deg_total','SINKdata','HDdeg')
     if (exist('ms','var'))
-%         finalStruct.numFrames = finalStruct.numFrames + ms.numFrames;
-%         finalStruct.alignedHeight = ms.alignedHeight;
-%         finalStruct.alignedWidth = ms.alignedWidth;
-%         if(count == 1) %initial itteration
-%             finalStruct.trace = ms.trace;
-%             finalStruct.firing = ms.firing;
-%             cellnumber = length(cellIndex(:,1))-length(finalStruct.trace(1,:));
-%             z = zeros(length(finalStruct.trace(:,1)),cellnumber);
-%             z3 = zeros(length(ms.segments(:,1,1)),length(ms.segments(1,:,1)),cellnumber);
-%             finalStruct.trace = [finalStruct.trace z];
-%             finalStruct.firing = [finalStruct.firing z];
-%             vidNum = ms.vidNum;
-%             finalStruct.segments = cat(3, ms.segments,z3) ;
-%             finalStruct.mask = ms.mask;
-%             finalStruct.minFrame{1} = ms.minFrame{1};
-%         else
-%             vidNum = length(finalStruct.vidNum)+ms.vidNum;
-%             z = zeros(length(ms.trace(:,1)),length(finalStruct.trace(1,:)));
-%             finalStruct.trace = [finalStruct.trace; z];
-%             finalStruct.firing = [finalStruct.firing; z];
-%             
-%             if(size(find(finalStruct.mask))< size(find(ms.mask)))
-%                 finalStruct.mask = ms.mask;
-%             end
-%             if(sum(sum(finalStruct.minFrame{1})) > sum(sum(ms.minFrame{1})))
-%                 finalStruct.minFrame = ms.minFrame;
-%             end
-% 
-%         end        
-%         %cell for cell concactenation
-%         for j = 1: length(cellIndex(:,1))
-%             if(cellIndex(j,count) == 0)
-%                 %                     msfinal.trace(length(msfinal.trace(:,j)):(length(msfinal.trace(:,j))+ length(ms.trace(:,j))),j) = 0;
-%                 %                     msfinal.firing(length(msfinal.firing(:,j)):(length(msfinal.firing(:,j))+length(ms.firing(:,j))),j) = 0;
-%             else
-%                 finalStruct.trace(length(finalStruct.trace(:,1))+1-length(ms.trace(:,1)):length(finalStruct.trace(:,1)),j) = ms.trace(:,cellIndex(j,count));
-%                 finalStruct.firing(length(finalStruct.firing(:,1))+1-length(ms.firing(:,1)):length(finalStruct.firing(:,1)),j) = ms.firing(:,cellIndex(j,count));
-%                 %                msfinal.segments
-%             end
-%         end        
-%         %matrix concactenation
-%         finalStruct.frameNum = [finalStruct.frameNum ms.frameNum];
-%         finalStruct.vidNum = [finalStruct.vidNum vidNum];
-%         finalStruct.vidObj = [finalStruct.vidObj ms.vidObj];
-%         finalStruct.hShift = [finalStruct.hShift; ms.hShift];
-%         finalStruct.wShift = [finalStruct.wShift; ms.wShift];
-%         %         if(isempty(msfinal.minFrame))
-%         %             msfinal.minFrame = ms.minFrame;
-%         %         elseif(sum(msfinal.minFrame{1}) > sum(ms.minFrame{1}))
-%         %             msfinal.minFrame = ms.minFrame;
-%         %         end
-%         clear ms
-%         count = count + 1;
+        finalStruct.numFrames = finalStruct.numFrames + ms.numFrames;
+        finalStruct.alignedHeight = ms.alignedHeight;
+        finalStruct.alignedWidth = ms.alignedWidth;
+        if(count == 1) %initial itteration
+            finalStruct.trace = ms.trace;
+            finalStruct.firing = ms.firing;
+            cellnumber = length(cellIndex(:,1))-length(finalStruct.trace(1,:));
+            z = zeros(length(finalStruct.trace(:,1)),cellnumber);
+            z3 = zeros(length(ms.segments(:,1,1)),length(ms.segments(1,:,1)),cellnumber);
+            finalStruct.trace = [finalStruct.trace z];
+            finalStruct.firing = [finalStruct.firing z];
+            vidNum = ms.vidNum;
+            finalStruct.segments = cat(3, ms.segments,z3) ;
+            finalStruct.mask = ms.mask;
+            finalStruct.minFrame{1} = ms.minFrame{1};
+        else
+            vidNum = length(finalStruct.vidNum)+ms.vidNum;
+            z = zeros(length(ms.trace(:,1)),length(finalStruct.trace(1,:)));
+            finalStruct.trace = [finalStruct.trace; z];
+            finalStruct.firing = [finalStruct.firing; z];
+            
+            if(size(find(finalStruct.mask))< size(find(ms.mask)))
+                finalStruct.mask = ms.mask;
+            end
+            if(sum(sum(finalStruct.minFrame{1})) > sum(sum(ms.minFrame{1})))
+                finalStruct.minFrame = ms.minFrame;
+            end
+
+        end        
+        %cell for cell concactenation
+        for j = 1: length(cellIndex(:,1))
+            if(cellIndex(j,count) == 0)
+                %                     msfinal.trace(length(msfinal.trace(:,j)):(length(msfinal.trace(:,j))+ length(ms.trace(:,j))),j) = 0;
+                %                     msfinal.firing(length(msfinal.firing(:,j)):(length(msfinal.firing(:,j))+length(ms.firing(:,j))),j) = 0;
+            else
+                finalStruct.trace(length(finalStruct.trace(:,1))+1-length(ms.trace(:,1)):length(finalStruct.trace(:,1)),j) = ms.trace(:,cellIndex(j,count));
+                finalStruct.firing(length(finalStruct.firing(:,1))+1-length(ms.firing(:,1)):length(finalStruct.firing(:,1)),j) = ms.firing(:,cellIndex(j,count));
+                %                msfinal.segments
+            end
+        end        
+        %matrix concactenation
+        finalStruct.frameNum = [finalStruct.frameNum ms.frameNum];
+        finalStruct.vidNum = [finalStruct.vidNum vidNum];
+        finalStruct.vidObj = [finalStruct.vidObj ms.vidObj];
+        finalStruct.hShift = [finalStruct.hShift; ms.hShift];
+        finalStruct.wShift = [finalStruct.wShift; ms.wShift];
+        %         if(isempty(msfinal.minFrame))
+        %             msfinal.minFrame = ms.minFrame;
+        %         elseif(sum(msfinal.minFrame{1}) > sum(ms.minFrame{1}))
+        %             msfinal.minFrame = ms.minFrame;
+        %         end
+        clear ms
+        count = count + 1;
     elseif(exist('frameMap','var'))        
         if isempty(frameMapFinal)
             frameMapFinal = frameMap;

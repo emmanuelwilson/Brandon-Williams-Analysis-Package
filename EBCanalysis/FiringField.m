@@ -11,14 +11,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Mark Brandon/Émmanuel Wilson
 
-testrm = out.rm;
+anglebin = 6;
+distancebin = 1.2;
+
+testrm = EBCA14.rm;
 % testcorr = corr;
 % testebc = EBCcells;
 % testmeanRM = meanF;
 cellout = [];
 
-distanceMat = [];
-angleMat = [];
+distanceMatA14 = [];
+angleMatA14 = [];
 
 % for i =1 : length(testebc)
 %     if ~isempty(find(testebc(i)== indOut))
@@ -63,18 +66,20 @@ xlabel('Angle (degrees)')
 ylabel('Distance (cm)')
 [rows, columns] = find(BW2>0);
 distance = mean(rows);
-distanceMat(i,1) = distance;
+distanceMatA14(i,1) = distance;
 angle = mean(columns);
-angleMat(i,1) = angle;
-vline(angleMat(i,1),'w')
-hline(distanceMat(i,1),'w')
+angleMatA14(i,1) = angle;
+vline(angleMatA14(i,1),'w')
+hline(distanceMatA14(i,1),'w')
 % pause
 clf
 end
 %
-angleup = find(angleMat>360);
-angledown = find(angleMat<0);
-angleMat(angleup) = angleMat(angleup)-360;
-angleMat = angleMat-180;
-angledown = find(angleMat<0);
-angleMat(angledown) = angleMat(angledown) +360;
+distanceMatA14 = distanceMatA14*distancebin;
+angleMatA14 = angleMatA14 *anglebin;
+angleup = find(angleMatA14>360);
+angledown = find(angleMatA14<0);
+angleMatA14(angleup) = angleMatA14(angleup)-360;
+angleMatA14 = angleMatA14-180;
+angledown = find(angleMatA14<0);
+angleMatA14(angledown) = angleMatA14(angledown) +360;
