@@ -19,7 +19,7 @@ if dimX > dimY
 else
     FOVsize = round(dimX/2);
 end
-name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize)];
+name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'LargeBlip700'];
 %% Get behavior information
 ratemaps = zeros(FOVsize/DistBinSize,360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values
 ratemaps1 = zeros(FOVsize/DistBinSize,360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values
@@ -38,7 +38,7 @@ fps = 30;                                               %Frames per second
 spf = 1/fps;                                            %Seconds per frame
 ms.timestamp = frameMap.*spf;                           %time stamp in seconds
 minDist = [1:2];
-cutoff = 300;
+cutoff = 700;
 timevar = [];
 
 %% FrameMap special case correction
@@ -773,9 +773,7 @@ while ~ifEscape
             plot([sp(1) ep(1)],[sp(2) ep(2)],'ro','MarkerFaceColor','r')
             plot([sp(1) ep(1)],[sp(2) ep(2)],'r')
         end
-    end
-    
-   o
+    end   
     % set or repeat
     while button ~=48 && button~=49
         [~,~,button]=ginput(1);
