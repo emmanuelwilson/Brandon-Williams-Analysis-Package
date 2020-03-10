@@ -1,16 +1,16 @@
-% % % load('ms.mat');
+% load('ms.mat');
 % % % load('behav.mat');
-% % % load('msTouchSync.mat');
-
-fps = 30;
+% load('msTouchSync.mat');
+ms = calcium;
+fps = 34;
 ticmultiplier = 2;
 
-%% -------------STEP 3) Reliability ---------------
+% -------------STEP 3) Reliability ---------------
 
-%Step1: Align data to Anchor points
-%Generate raster plots for all trials and all cells
+% Step1: Align data to Anchor points
+% Generate raster plots for all trials and all cells
 
-[Calcium, TrialInds,rawSep,rawCalcium] = TouchRaster_V3(msTouchSync.events,ms,1,1,1,1,1,1);
+[Calcium, TrialInds,rawSep,rawCalcium] = TouchRaster_V4(msTouchSync.events,ms,fps,1,1,1,1,1,1);
 save('TouchRasterResults.mat','Calcium','TrialInds')
 save('UncutTraces.mat','rawSep','rawCalcium')
 load('minmax.mat')
@@ -53,7 +53,7 @@ subplot(2,2,1)
 if ~isempty(Dcorrectmean)
     imagesc(Dcorrectmean)
     xticks(1:fps:length(Dcorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Dcorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Dcorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Dcorrectmean(:,1))/10):length(Dcorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -65,7 +65,7 @@ subplot(2,2,2)
 if ~isempty(Dincorrectmean)
     imagesc(Dincorrectmean)
     xticks(1:fps:length(Dincorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Dincorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Dincorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Dincorrectmean(:,1))/10):length(Dincorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -77,7 +77,7 @@ subplot(2,2,3)
 if ~isempty(Dcorcorrectmean)
     imagesc(Dcorcorrectmean)
     xticks(1:fps:length(Dcorcorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Dcorcorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Dcorcorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Dcorcorrectmean(:,1))/10):length(Dcorcorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -89,7 +89,7 @@ subplot(2,2,4)
 if ~isempty(Dcorincorrectmean)
     imagesc(Dcorincorrectmean)
     xticks(1:fps:length(Dcorincorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Dcorincorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Dcorincorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Dcorincorrectmean(:,1))/10):length(Dcorincorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -124,7 +124,7 @@ subplot(2,2,1)
 if ~isempty(Fcorrectmean)
     imagesc(Fcorrectmean)
     xticks(1:fps:length(Fcorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Fcorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Fcorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Fcorrectmean(:,1))/10):length(Fcorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -135,7 +135,7 @@ subplot(2,2,2)
 if ~isempty(Fincorrectmean)
     imagesc(Fincorrectmean)
     xticks(1:fps:length(Fincorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Fincorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Fincorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Fincorrectmean(:,1))/10):length(Fincorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -146,7 +146,7 @@ subplot(2,2,3)
 if ~isempty(Fcorcorrectmean)
     imagesc(Fcorcorrectmean)
     xticks(1:fps:length(Fcorcorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Fcorcorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Fcorcorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Fcorcorrectmean(:,1))/10):length(Fcorcorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -157,7 +157,7 @@ subplot(2,2,4)
 if ~isempty(Fcorincorrectmean)
     imagesc(Fcorincorrectmean)
     xticks(1:fps:length(Fcorincorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Fcorincorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Fcorincorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Fcorincorrectmean(:,1))/10):length(Fcorincorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -188,7 +188,7 @@ if ~isempty(Bcorrectmean)
     imagesc(Bcorrectmean)
     vline(length(Bcorrectmean(1,:)) - 450,'g')
     xticks(1:fps:length(Bcorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Bcorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Bcorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Bcorrectmean(:,1))/10):length(Bcorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -200,7 +200,7 @@ if ~isempty(Bincorrectmean)
     imagesc(Bincorrectmean)
     vline(length(Bincorrectmean(1,:)) - 450,'r')
     xticks(1:fps:length(Bincorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Bincorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Bincorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Bincorrectmean(:,1))/10):length(Bincorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -212,7 +212,7 @@ if ~isempty(Bcorcorrectmean)
     imagesc(Bcorcorrectmean)
     vline(length(Bcorcorrectmean(1,:)) - 450,'g')
     xticks(1:fps:length(Bcorcorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Bcorcorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Bcorcorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Bcorcorrectmean(:,1))/10):length(Bcorcorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -223,7 +223,7 @@ subplot(2,2,4)
 if ~isempty(Bcorincorrectmean)
     imagesc(Bcorincorrectmean)
     xticks(1:fps:length(Bcorincorrectmean(1,:)));
-    xticklabels(Frame2SecLabels(length(Bcorincorrectmean(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Bcorincorrectmean(1,:)),fps,ticmultiplier));
     yticks(1:round(length(Bcorincorrectmean(:,1))/10):length(Bcorincorrectmean(:,1)));
 end
 ylabel('Cell')
@@ -249,7 +249,7 @@ subplot(2,2,1)
 if ~isempty(Dcorrectpop)
     plot(Dcorrectpop)
     xticks(1:fps:length(Dcorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Dcorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Dcorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Dcorrectpop(:,1))/3):length(Dcorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -260,7 +260,7 @@ subplot(2,2,2)
 if ~isempty(Dincorrectpop)
     plot(Dincorrectpop)
     xticks(1:fps:length(Dincorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Dincorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Dincorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Dincorrectpop(:,1))/3):length(Dincorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -271,7 +271,7 @@ subplot(2,2,3)
 if ~isempty(Dcorcorrectpop)
     plot(Dcorcorrectpop)
     xticks(1:fps:length(Dcorcorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Dcorcorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Dcorcorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Dcorcorrectpop(:,1))/3):length(Dcorcorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -282,7 +282,7 @@ subplot(2,2,4)
 if ~isempty(Dcorincorrectpop)
     plot(Dcorincorrectpop)
     xticks(1:fps:length(Dcorincorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Dcorincorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Dcorincorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Dcorincorrectpop(:,1))/3):length(Dcorincorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -306,7 +306,7 @@ subplot(2,2,1)
 if ~isempty(Fcorrectpop)
     plot(Fcorrectpop)
     xticks(1:fps:length(Fcorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Fcorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Fcorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Fcorrectpop(:,1))/3):length(Fcorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -317,7 +317,7 @@ subplot(2,2,2)
 if ~isempty(Fincorrectpop)
     plot(Fincorrectpop)
     xticks(1:fps:length(Fincorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Fincorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Fincorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Fincorrectpop(:,1))/3):length(Fincorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -328,7 +328,7 @@ subplot(2,2,3)
 if ~isempty(Fcorcorrectpop)
     plot(Fcorcorrectpop)
     xticks(1:fps:length(Fcorcorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Fcorcorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Fcorcorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Fcorcorrectpop(:,1))/3):length(Fcorcorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -339,7 +339,7 @@ subplot(2,2,4)
 if ~isempty(Fcorincorrectpop)
     plot(Fcorincorrectpop)
     xticks(1:fps:length(Fcorincorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Fcorincorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Fcorincorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Fcorincorrectpop(:,1))/3):length(Fcorincorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -365,7 +365,7 @@ if ~isempty(Bcorrectpop)
     plot(Bcorrectpop)
     vline(length(Bcorrectpop) - 450,'g')
     xticks(1:fps:length(Bcorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Bcorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Bcorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Bcorrectpop(:,1))/3):length(Bcorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -376,7 +376,7 @@ subplot(2,2,2)
 if ~isempty(Bincorrectpop)
     plot(Bincorrectpop)
     xticks(1:fps:length(Bincorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Bincorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Bincorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Bincorrectpop(:,1))/3):length(Bincorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -388,7 +388,7 @@ if ~isempty(Bcorcorrectpop)
     plot(Bcorcorrectpop)
     vline(length(Bcorcorrectpop) - 450,'g')
     xticks(1:fps:length(Bcorcorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Bcorcorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Bcorcorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Bcorcorrectpop(:,1))/3):length(Bcorcorrectpop(:,1)));
 end
 ylabel('Mean Fluerescence Activity')
@@ -399,7 +399,7 @@ subplot(2,2,4)
 if ~isempty(Bcorincorrectpop)
     plot(Bcorincorrectpop)
     xticks(1:fps:length(Bcorincorrectpop(1,:)));
-    xticklabels(Frame2SecLabels(length(Bcorincorrectpop(1,:)),30,ticmultiplier));
+    xticklabels(Frame2SecLabels(length(Bcorincorrectpop(1,:)),fps,ticmultiplier));
     yticks(0:round(length(Bcorincorrectpop(:,1))/3):length(Bcorincorrectpop(:,1)));
 end
 ylabel('Mean Fluorescence Activity')
@@ -436,7 +436,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.DcorrectCells{choices(i)}(j),1) minmax(ShuffledCritSep.DcorrectCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedcorrectD(1,:)));
-            xticklabels(Frame2SecLabels(length(passedcorrectD(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedcorrectD(1,:)),fps,ticmultiplier));
             yticks(1:3:length(passedcorrectD(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -466,7 +466,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.DincorrectCells{choices(i)}(j),1) minmax(ShuffledCritSep.DincorrectCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedincorrectD(1,:)));
-            xticklabels(Frame2SecLabels(length(passedincorrectD(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedincorrectD(1,:)),fps,ticmultiplier));
             yticks(1:length(passedincorrectD(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -496,7 +496,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.DccorCells{choices(i)}(j),1) minmax(ShuffledCritSep.DccorCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedcorrectcorrectionD(1,:)));
-            xticklabels(Frame2SecLabels(length(passedcorrectcorrectionD(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedcorrectcorrectionD(1,:)),fps,ticmultiplier));
             yticks(1:length(passedcorrectcorrectionD(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -526,7 +526,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.DicorCells{choices(i)}(j),1) minmax(ShuffledCritSep.DicorCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedincorrectcorrectionD(1,:)));
-            xticklabels(Frame2SecLabels(length(passedincorrectcorrectionD(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedincorrectcorrectionD(1,:)),fps,ticmultiplier));
             yticks(1:length(passedincorrectcorrectionD(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -567,7 +567,7 @@ for i = 1 : length(choices)
     if ~isempty(meancDpop)
         imagesc(meancDpop)
         xticks(1:fps:length(meancDpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meancDpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meancDpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meancDpop(:,1))/10):length(meancDpop(:,1)));
         xlabel('Time(Seconds)')
         ylabel('Cell ID')
@@ -580,7 +580,7 @@ for i = 1 : length(choices)
     if ~isempty(meaniDpop)
         imagesc(meaniDpop)
         xticks(1:fps:length(meaniDpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meaniDpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meaniDpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meaniDpop(:,1))/10):length(meaniDpop(:,1)));
         xlabel('Time(Seconds)')
         ylabel('Cell ID')
@@ -593,7 +593,7 @@ for i = 1 : length(choices)
         colorbar
         caxis([minval maxval])
         xticks(1:fps:length(meanccorDpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meanccorDpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meanccorDpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meanccorDpop(:,1))/10):length(meanccorDpop(:,1)));
         xlabel('Time(Seconds)')
         ylabel('Cell ID')
@@ -607,7 +607,7 @@ for i = 1 : length(choices)
         colorbar
         caxis([minval maxval])
         xticks(1:fps:length(meanicorDpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meanicorDpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meanicorDpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meanicorDpop(:,1))/10):length(meanicorDpop(:,1)));
         xlabel('Time(Seconds)')
         ylabel('Cell ID')
@@ -637,7 +637,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.FcorrectCells{choices(i)}(j),1) minmax(ShuffledCritSep.FcorrectCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedcorrectF(1,:)));
-            xticklabels(Frame2SecLabels(length(passedcorrectF(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedcorrectF(1,:)),fps,ticmultiplier));
             yticks(1:3:length(passedcorrectF(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -667,7 +667,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.FincorrectCells{choices(i)}(j),1) minmax(ShuffledCritSep.FincorrectCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedincorrectF(1,:)));
-            xticklabels(Frame2SecLabels(length(passedincorrectF(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedincorrectF(1,:)),fps,ticmultiplier));
             yticks(1:length(passedincorrectF(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -697,7 +697,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.FccorCells{choices(i)}(j),1) minmax(ShuffledCritSep.FccorCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedcorrectcorrectionF(1,:)));
-            xticklabels(Frame2SecLabels(length(passedcorrectcorrectionF(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedcorrectcorrectionF(1,:)),fps,ticmultiplier));
             yticks(1:length(passedcorrectcorrectionF(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -727,7 +727,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.FicorCells{choices(i)}(j),1) minmax(ShuffledCritSep.FicorCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedincorrectcorrectionF(1,:)));
-            xticklabels(Frame2SecLabels(length(passedincorrectcorrectionF(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedincorrectcorrectionF(1,:)),fps,ticmultiplier));
             yticks(1:3:length(passedincorrectcorrectionF(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -755,7 +755,7 @@ for i = 1 : length(choices)
     imagesc(meancFpop)
     if ~isempty(meancFpop)
         xticks(1:fps:length(meancFpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meancFpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meancFpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meancFpop(:,1))/10):length(meancFpop(:,1)));
     end
     xlabel('Time(Seconds)')
@@ -765,7 +765,7 @@ for i = 1 : length(choices)
     imagesc(meaniFpop)
     if ~isempty(meaniFpop)
         xticks(1:fps:length(meaniFpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meaniFpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meaniFpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meaniFpop(:,1))/10):length(meaniFpop(:,1)));
     end
     xlabel('Time(Seconds)')
@@ -775,7 +775,7 @@ for i = 1 : length(choices)
     imagesc(meanccorFpop)
     if ~isempty(meanccorFpop)
         xticks(1:fps:length(meanccorFpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meanccorFpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meanccorFpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meanccorFpop(:,1))/10):length(meanccorFpop(:,1)));
     end
     xlabel('Time(Seconds)')
@@ -785,7 +785,7 @@ for i = 1 : length(choices)
     imagesc(meanicorFpop)
     if ~isempty(meanicorFpop)
         xticks(1:fps:length(meanicorFpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meanicorFpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meanicorFpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meanicorFpop(:,1))/10):length(meanicorFpop(:,1)));
     end
     xlabel('Time(Seconds)')
@@ -814,7 +814,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.BcorrectCells{choices(i)}(j),1) minmax(ShuffledCritSep.BcorrectCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedcorrectB(1,:)));
-            xticklabels(Frame2SecLabels(length(passedcorrectB(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedcorrectB(1,:)),fps,ticmultiplier));
             yticks(1:3:length(passedcorrectB(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -844,7 +844,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.BincorrectCells{choices(i)}(j),1) minmax(ShuffledCritSep.BincorrectCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedincorrectB(1,:)));
-            xticklabels(Frame2SecLabels(length(passedincorrectB(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedincorrectB(1,:)),fps,ticmultiplier));
             yticks(1:length(passedincorrectB(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -874,7 +874,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.BccorCells{choices(i)}(j),1) minmax(ShuffledCritSep.BccorCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedcorrectcorrectionB(1,:)));
-            xticklabels(Frame2SecLabels(length(passedcorrectcorrectionB(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedcorrectcorrectionB(1,:)),fps,ticmultiplier));
             yticks(1:length(passedcorrectcorrectionB(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -904,7 +904,7 @@ for i = 1 : length(choices)
             caxis([minmax(ShuffledCritSep.BicorCells{choices(i)}(j),1) minmax(ShuffledCritSep.BicorCells{choices(i)}(j),2)])
             view(2)
             xticks(1:fps:length(passedincorrectcorrectionB(1,:)));
-            xticklabels(Frame2SecLabels(length(passedincorrectcorrectionB(1,:)),30,ticmultiplier));
+            xticklabels(Frame2SecLabels(length(passedincorrectcorrectionB(1,:)),fps,ticmultiplier));
             yticks(1:length(passedincorrectcorrectionB(:,1)));
             xlabel('Time(Seconds)')
             ylabel('Trial')
@@ -934,7 +934,7 @@ for i = 1 : length(choices)
     imagesc(meancBpop)
     if ~isempty(meancBpop)
         xticks(1:fps:length(meancBpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meancBpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meancBpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meancBpop(:,1))/10):length(meancBpop(:,1)));
     end
     xlabel('Time(Seconds)')
@@ -944,7 +944,7 @@ for i = 1 : length(choices)
     imagesc(meaniBpop)
     if ~isempty(meaniBpop)
         xticks(1:fps:length(meaniBpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meaniBpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meaniBpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meaniBpop(:,1))/10):length(meaniBpop(:,1)));
     end
     xlabel('Time(Seconds)')
@@ -954,7 +954,7 @@ for i = 1 : length(choices)
     imagesc(meanccorBpop)
     if ~isempty(meanccorBpop)
         xticks(1:fps:length(meanccorBpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meanccorBpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meanccorBpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meanccorBpop(:,1))/10):length(meanccorBpop(:,1)));
     end
     xlabel('Time(Seconds)')
@@ -964,7 +964,7 @@ for i = 1 : length(choices)
     imagesc(meanicorBpop)
     if ~isempty(meanicorBpop)
         xticks(1:fps:length(meanicorBpop(1,:)));
-        xticklabels(Frame2SecLabels(length(meanicorBpop(1,:)),30,ticmultiplier));
+        xticklabels(Frame2SecLabels(length(meanicorBpop(1,:)),fps,ticmultiplier));
         yticks(1:round(length(meanicorBpop(:,1))/10):length(meanicorBpop(:,1)));
     end
     xlabel('Time(Seconds)')
