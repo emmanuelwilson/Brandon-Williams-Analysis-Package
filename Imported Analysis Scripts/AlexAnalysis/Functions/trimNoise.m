@@ -1,0 +1,3 @@
+function trimNoise(v)
+
+end
