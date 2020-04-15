@@ -10,7 +10,7 @@ for i = 1 : length(tmap(:,1))
     rows = zeros(length(tmap(1,:)),1);
     
     start = length(find(tmap(i,:)));
-    if start < length(tmap(1,:)) && (find(tmap(i,:),1) > 1)
+    if start < length(tmap(1,:)) && isempty(find(tmap(i,:),1))
         c = find(tmap(i,:),1);
     else
         c = 1;

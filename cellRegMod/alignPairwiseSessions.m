@@ -45,7 +45,7 @@ function alignPairwiseSessions(folder)
                 close all
                 copyfile([folder, '\','SegmentsForAlignment\Results\', num2str(j),'_',num2str(k)],outP2);
                 rmdir([folder,'\SegmentsForAlignment'],'s');                
-                drawnow                
+                drawnow
 
 %                 isReg = map(all(map~=0,2),:);
                 alignmentMap{j,k} = map;%isReg;
