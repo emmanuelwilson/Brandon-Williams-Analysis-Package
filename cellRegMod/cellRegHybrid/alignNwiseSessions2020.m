@@ -115,12 +115,12 @@ function alignNwiseSessions2020(path,nFold)
             end
 
             for iteration = 1:iters
-%                 try
+                try
                     [map, regStruct] = registerCells2020([upiece{mi} '\Segments' ]);
-%                 catch
-%                     map = [];
-%                     regStruct = [];
-%                 end
+                catch
+                    map = [];
+                    regStruct = [];
+                end
                 itermap{iteration} = map;
                 iterstruct{iteration} = regStruct;
                 close all
