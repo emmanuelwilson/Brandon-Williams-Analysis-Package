@@ -138,6 +138,7 @@ function alignNwiseSessions2020(path,nFold)
             if ~isempty(b)
                 map = itermap{b};
                 score = iterstruct{b}.cell_scores;
+                corval = iterstruct{b}.maximal_cross_correlation;
                 for s = 1 : length(iterstruct{b}.p_same_registered_pairs)
                     probtemp(s,:) = nanmean(iterstruct{b}.p_same_registered_pairs{s});
                 end
@@ -146,19 +147,21 @@ function alignNwiseSessions2020(path,nFold)
             alignmentMap{i} = map;            
             prob{i} = probtemp;
             scoreMap{i} = score;
-%             cormat(i) = corval;
+            cormat(i) = corval;
             probtemp = [];
         end
         if nFold == 2
             nm = repmat({[]},length(sessions));
             nmp = repmat({[]},length(sessions));
             nms = repmat({[]},length(sessions));
+            nmc = repmat({[]},length(sessions));
             for i = 1:length(combs(:,1))
                 best = [alignmentMap(i) oldAlignmentMap(combs(i,1),combs(i,2))];
                 best = best(~cellfun(@isempty,best));
                 bprob = [prob(i) oldAlignmentMap(combs(i,1),combs(i,2))];
                 bprob = bprob(~cellfun(@isempty,bprob));
                 bestscore = [scoreMap(i) oldAlignmentMap(combs(i,1),combs(i,2))];
+                bcorr = [cormat(i) oldAlignmentMap(combs(i,1),combs(i,2))];
                 bestscore = bestscore(~cellfun(@isempty,bestscore));
                 if isempty(best)
                     continue
@@ -167,14 +170,17 @@ function alignNwiseSessions2020(path,nFold)
                 nm{combs(i,1),combs(i,2)} = best{b};
                 nmp{combs(i,1),combs(i,2)} = bprob{b};
                 nms{combs(i,1),combs(i,2)} = bestscore{b};
+                nmc{combs(i,1),combs(i,2)} = bcorr{b};
             end
             alignmentMap = nm;
             probMap = nmp;
             scoreMap = nmp;
+            CorrMap = nmc;
         else
             nm = repmat({[]},[length(combs(:,1)) 1]);
             nmp = repmat({[]},[length(combs(:,1)) 1]);
             nms = repmat({[]},[length(combs(:,1)) 1]);
+            nmc = repmat({[]},[length(combs(:,1)) 1]);
             for i = 1:length(combs(:,1))
                 best = [alignmentMap(i) oldAlignmentMap(i)];
                 best = best(~cellfun(@isempty,best));
@@ -182,6 +188,7 @@ function alignNwiseSessions2020(path,nFold)
                 bprob = bprob(~cellfun(@isempty,bprob));
                 bestscore = [scoreMap(i) oldAlignmentMap(i)];
                 bestscore = bestscore(~cellfun(@isempty,bestscore));
+                bcorr = [cormat(i) oldAlignmentMap(i)];
                 if isempty(best)
                     continue
                 end
@@ -189,10 +196,12 @@ function alignNwiseSessions2020(path,nFold)
                 nm{i} = best{b};
                 nmp{i} = bprob{b};
                 nms{i} = bestscore{b};
+                nmc{i} = bcorr{b};
             end
             alignmentMap = nm;
             probMap = nmp;
             scoreMap = nms;
+            CorrMap = nmc;
         end
         
         ref = load(sessions{1});
@@ -215,6 +224,7 @@ function alignNwiseSessions2020(path,nFold)
         ref.alignment(doInd).nFold = nFold;
         ref.alignment(doInd).probMap = probMap;
         ref.alignment(doInd).scoreMap = scoreMap;
+        ref.alignment(doInd).CorrMap = CorrMap;
 %         save('temporaryAlignmentMap','alignmentMap')
         save(sessions{1},'-struct','ref','-v7.3');
     end
