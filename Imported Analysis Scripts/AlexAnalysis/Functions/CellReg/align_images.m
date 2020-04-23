@@ -1,4 +1,4 @@
-function [spatial_footprints_corrected,centroid_locations_corrected,footprints_projections_corrected,centroid_projections_corrected,maximal_cross_correlation,best_translations,overlapping_area]=align_images(spatial_footprints,centroid_locations,footprints_projections,centroid_projections,overlapping_area_all_sessions,microns_per_pixel,reference_session_index,alignment_type,use_parallel_processing,varargin)
+function [spatial_footprints_corrected,centroid_locations_corrected,footprints_projections_corrected,centroid_projections_corrected,maximal_cross_correlation,maximal_cross_correlation_foot,best_translations,overlapping_area]=align_images(spatial_footprints,centroid_locations,footprints_projections,centroid_projections,overlapping_area_all_sessions,microns_per_pixel,reference_session_index,alignment_type,use_parallel_processing,varargin)
 
 % This function recieves the spatial footprints from different sessions and
 % finds the optimal alignment between their FOV's. This is the first step
@@ -169,11 +169,18 @@ for n=1:number_of_sessions-1
         cross_corr_cent=normxcorr2(centroid_projections_rotated{reference_session_index},centroid_projections_rotated{registration_order(n)});
     else
         cross_corr_cent=normxcorr2(centroid_projections_corrected{reference_session_index},centroid_projections_corrected{registration_order(n)});
+        cross_corr_foot=normxcorr2(footprints_projections_corrected{reference_session_index},footprints_projections_corrected{registration_order(n)});
     end
     cross_corr_size=size(cross_corr_cent);
     cross_corr_partial=cross_corr_cent(round(cross_corr_size(1)/2-cross_corr_size(1)/6):round(cross_corr_size(1)/2+cross_corr_size(1)/6)...
         ,round(cross_corr_size(2)/2-cross_corr_size(2)/6):round(cross_corr_size(2)/2+cross_corr_size(2)/6));
-    [maximal_cross_correlation(n),x_ind]=max(max(cross_corr_partial));   
+    [maximal_cross_correlation(n),x_ind]=max(max(cross_corr_partial)); 
+    
+    cross_corr_size_foot=size(cross_corr_foot);
+    cross_corr_partial_foot=cross_corr_foot(round(cross_corr_size_foot(1)/2-cross_corr_size_foot(1)/6):round(cross_corr_size_foot(1)/2+cross_corr_size_foot(1)/6)...
+        ,round(cross_corr_size_foot(2)/2-cross_corr_size_foot(2)/6):round(cross_corr_size_foot(2)/2+cross_corr_size_foot(2)/6));
+    [maximal_cross_correlation_foot(n),x_ind_foot]=max(max(cross_corr_partial_foot));
+    
     if strcmp(alignment_type,'Translations and Rotations')
         best_rotations(registration_order(n))=best_rotation;
     end
