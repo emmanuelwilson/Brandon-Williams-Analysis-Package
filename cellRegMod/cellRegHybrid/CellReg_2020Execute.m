@@ -6,7 +6,6 @@ oldcd = pwd;
 cd(folderpath)
 dir(pwd);
 mkdir(folderpath, 'OriginalFiles')
-mkdir(folderpath, 'Results')
 copyfile(folderpath,[folderpath,'/OriginalFiles']);
 folder = dir(folderpath);
 
@@ -15,6 +14,3 @@ Shift = LandmarkShift2020(folderpath);
 
 %Align sessions using CellReg
 alignNwiseSessions2020(folderpath)
-
-cormat = cormatrix([folderpath,'\Results']);
-save([folderpath,'\cormat.mat'],'cormat','Shift');
