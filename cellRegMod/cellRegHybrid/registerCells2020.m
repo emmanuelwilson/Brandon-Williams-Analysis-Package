@@ -69,7 +69,7 @@ function [optimal_cell_to_index_map, cell_registered_struct] = registerCells2020
         [spatial_footprints_corrected,centroid_locations_corrected,footprints_projections_corrected,centroid_projections_corrected,maximal_cross_correlation,alignment_translations,overlapping_FOV]=...
             align_images(adjusted_spatial_footprints,centroid_locations,adjusted_footprints_projections,centroid_projections,adjusted_FOV,microns_per_pixel,reference_session_index,alignment_type,use_parallel_processing,maximal_rotation);
     elseif strcmp(alignment_type,'Translations')
-        [spatial_footprints_corrected,centroid_locations_corrected,footprints_projections_corrected,centroid_projections_corrected,maximal_cross_correlation,alignment_translations,overlapping_FOV]=...
+        [spatial_footprints_corrected,centroid_locations_corrected,footprints_projections_corrected,centroid_projections_corrected,maximal_cross_correlation,maximal_cross_correlation_foot,alignment_translations,overlapping_FOV]=...
             align_images(adjusted_spatial_footprints,centroid_locations,adjusted_footprints_projections,centroid_projections,adjusted_FOV,microns_per_pixel,reference_session_index,alignment_type,use_parallel_processing);
     end
 
@@ -275,6 +275,7 @@ function [optimal_cell_to_index_map, cell_registered_struct] = registerCells2020
     cell_registered_struct.adjustment_x_zero_padding=adjustment_zero_padding(1,:);
     cell_registered_struct.adjustment_y_zero_padding=adjustment_zero_padding(2,:);
     cell_registered_struct.maximal_cross_correlation = maximal_cross_correlation;
+    cell_registered_struct.maximal_cross_correlation_foot = maximal_cross_correlation_foot;
 %     save(fullfile(results_directory,['cellRegistered_' datestr(clock,'yyyymmdd_HHMMss') '.mat']),'cell_registered_struct','-v7.3')
 
     % Saving a log file with all the chosen parameters:
