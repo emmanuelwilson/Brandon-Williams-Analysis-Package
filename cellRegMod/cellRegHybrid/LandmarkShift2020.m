@@ -12,7 +12,7 @@ function Shift = LandmarkShift2020(folderpath)
 
 folder = dir(folderpath);                                                   %List folder contents
 sessions = {folder(3:end).name};                                            %Seperate folder contents
-sessions = sessions(3:end);
+sessions = sessions(2:end);
 Shift = [];
 count = 0;
 msflag = 0;
