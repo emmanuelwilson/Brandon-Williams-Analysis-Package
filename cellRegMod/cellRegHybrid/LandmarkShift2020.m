@@ -19,14 +19,10 @@ msflag = 0;
 calflag = 0;
 tempsessions = sessions;
 for i = 1 : length(sessions)
-    if contains(sessions{i},'msDeconvolved')
-        if str2num(sessions{i}(14:end-3)) ~= i
-            tempsessions{str2num(sessions{i}(14:end-3))} = sessions{i};
-        end
-    elseif contains(sessions{i},'ms')
-        if str2num(sessions{i}(3:end-3)) ~= i
-            tempsessions{str2num(sessions{i}(3:end-3))} = sessions{i};
-        end
+    if ~isempty(str2num(sessions{i}(end-5:end-3)))        
+        tempsessions{str2num(sessions{i}(end-5:end-3))} = sessions{i};
+    elseif ~isempty(str2num(sessions{i}(end-4:end-3)))        
+        tempsessions{str2num(sessions{i}(end-4:end-3))} = sessions{i};
     end
 end
 sessions = tempsessions;
