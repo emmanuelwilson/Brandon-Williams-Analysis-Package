@@ -2,7 +2,10 @@
 % % % load('behav.mat');
 % load('msTouchSync.mat');
 ms = calcium;
-fps = 34;
+timediff = diff(msTouchSync.timeMap);
+timediffnew = timediff(find(timediff));
+fps = 1/mode(timediffnew);
+% fps = 34;
 ticmultiplier = 2;
 
 % -------------STEP 3) Reliability ---------------
