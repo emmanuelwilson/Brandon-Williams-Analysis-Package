@@ -6,11 +6,19 @@ function alignNwiseSessions2020(path,nFold)
     end
     oldcd = pwd;
     cd(path);
-    paths = getFilePaths(path,'.mat')
+    paths = getFilePaths(path,'.mat');
     for i = length(paths):-1:1
         if contains(paths{i},'OriginalFiles')
             paths(i) = [];
         end        
+    end
+    paths
+    prompt = 'Non-Rigid Registration?:Y/N ';
+    str = input(prompt,'s');
+    if isempty(str) || str == 'Y' || str == 'y'
+        nonRigid = true;
+    else
+        nonRigid = false;
     end
     
     iters = 5;
@@ -31,7 +39,7 @@ function alignNwiseSessions2020(path,nFold)
         spiece = [spiece; {paths{i}(ind+2:end-4)}];
     end
     upiece = unique(piece);
-    
+    mkdir(path,'Results');
     for mi = 1:length(upiece)
         fprintf(['\n\tMouse:  ' num2str(upiece{mi}) '\n'])
         
@@ -113,19 +121,24 @@ function alignNwiseSessions2020(path,nFold)
                 checkP(outP)
                 save(outP,'prepped'); 
             end
-
+            mkdir(path,'tempfigs')
             for iteration = 1:iters
-                try
-                    [map, regStruct] = registerCells2020([upiece{mi} '\Segments' ]);
-                catch
-                    map = [];
-                    regStruct = [];
-                end
+%                 try
+                    if nonRigid
+                        [map, regStruct] = registerCellsNoGUI2020([upiece{mi} '\Segments' ]);
+                    else
+                        [map, regStruct] = registerCells2020([upiece{mi} '\Segments' ]);
+                    end
+%                 catch
+%                     map = [];
+%                     regStruct = [];
+%                 end
                 itermap{iteration} = map;
                 iterstruct{iteration} = regStruct;
                 close all
                 close all hidden
                 drawnow
+                copyfile([path,'\Segments\Plots\CellRegistration\Figures'],[path,'\tempfigs\',num2str(iteration)]);
             end
             try
                 rmdir([upiece{mi}, '\Segments' ],'s');
@@ -139,18 +152,26 @@ function alignNwiseSessions2020(path,nFold)
                 map = itermap{b};
                 score = iterstruct{b}.cell_scores;
                 corval = iterstruct{b}.maximal_cross_correlation;
-                corval_foot = iterstruct{b}.maximal_cross_correlation_foot;
+                if ~nonRigid
+                    corval_foot = iterstruct{b}.maximal_cross_correlation_foot;
+                end
                 for s = 1 : length(iterstruct{b}.p_same_registered_pairs)
                     probtemp(s,:) = nanmean(iterstruct{b}.p_same_registered_pairs{s});
                 end
+                copyfile([path,'\tempfigs\',num2str(b)],[path,'\Results\',num2str(combs(i,1)),'_',num2str(combs(i,2))]);
 %                 corval = iterstruct{b}.maximal_cross_correlation;
             end
             alignmentMap{i} = map;            
             prob{i} = probtemp;
             scoreMap{i} = score;
             cormat(i) = corval;
-            cormat_foot(i) = corval_foot;
+            if ~nonRigid
+                cormat_foot(i) = corval_foot;
+            end
             probtemp = [];
+            try
+                rmdir([upiece{mi}, '\tempfigs' ],'s');
+            end
         end
         if nFold == 2
             nm = repmat({[]},length(sessions));
@@ -165,7 +186,9 @@ function alignNwiseSessions2020(path,nFold)
                 bprob = bprob(~cellfun(@isempty,bprob));
                 bestscore = [scoreMap(i)];% oldAlignmentMap(combs(i,1),combs(i,2))];
                 bcorr = [cormat(i)];% oldAlignmentMap(combs(i,1),combs(i,2))];
-                bcorr_foot = [cormat_foot(i)];
+                if ~nonRigid
+                    bcorr_foot = [cormat_foot(i)];
+                end
                 bestscore = bestscore(~cellfun(@isempty,bestscore));
                 if isempty(best)
                     continue
@@ -175,19 +198,25 @@ function alignNwiseSessions2020(path,nFold)
                 nmp{combs(i,1),combs(i,2)} = bprob{b};
                 nms{combs(i,1),combs(i,2)} = bestscore{b};
                 nmc_cent(combs(i,1),combs(i,2)) = bcorr(b);
-                nmc_foot(combs(i,1),combs(i,2)) = bcorr_foot(b);
+                if ~nonRigid
+                    nmc_foot(combs(i,1),combs(i,2)) = bcorr_foot(b);
+                end
             end
             alignmentMap = nm;
             probMap = nmp;
             scoreMap = nmp;
             CorrMap_cent = nmc_cent;
-            CorrMap_foot = nmc_foot;
+            if ~nonRigid
+                CorrMap_foot = nmc_foot;
+            end
         else
             nm = repmat({[]},[length(combs(:,1)) 1]);
             nmp = repmat({[]},[length(combs(:,1)) 1]);
             nms = repmat({[]},[length(combs(:,1)) 1]);
             nmc_cent = repmat([],[length(combs(:,1)) 1]);
-            nmc_foot = repmat([],[length(combs(:,1)) 1]);
+            if ~nonRigid
+                nmc_foot = repmat([],[length(combs(:,1)) 1]);
+            end
             for i = 1:length(combs(:,1))
                 best = [alignmentMap(i)];% oldAlignmentMap(i)];
                 best = best(~cellfun(@isempty,best));
@@ -196,7 +225,9 @@ function alignNwiseSessions2020(path,nFold)
                 bestscore = [scoreMap(i)];% oldAlignmentMap(i)];
                 bestscore = bestscore(~cellfun(@isempty,bestscore));
                 bcorr = [cormat(i)];% oldAlignmentMap(i)];
-                bcorr_foot = [cormat_foot(i)];
+                if ~nonRigid
+                    bcorr_foot = [cormat_foot(i)];
+                end
                 if isempty(best)
                     continue
                 end
@@ -205,13 +236,17 @@ function alignNwiseSessions2020(path,nFold)
                 nmp{i} = bprob{b};
                 nms{i} = bestscore{b};
                 nmc_cent(i) = bcorr(b);
-                nmc_foot(i) = bcorr_foot(b);
+                if ~nonRigid
+                    nmc_foot(i) = bcorr_foot(b);
+                end
             end
             alignmentMap = nm;
             probMap = nmp;
             scoreMap = nms;
             CorrMap_cent = nmc_cent;
-            CorrMap_foot = nmc_foot;
+            if ~nonRigid
+                CorrMap_foot = nmc_foot;
+            end
         end
         
         ref = load(sessions{1});
@@ -233,9 +268,13 @@ function alignNwiseSessions2020(path,nFold)
         ref.alignment(doInd).sessions = sessions;
         ref.alignment(doInd).nFold = nFold;
         ref.alignment(doInd).probMap = probMap;
-        ref.alignment(doInd).scoreMap = scoreMap;
-        ref.alignment(doInd).CorrMap_centroid = CorrMap_cent;
-        ref.alignment(doInd).CorrMap_footprints = CorrMap_foot;
+        ref.alignment(doInd).scoreMap = scoreMap;                
+        if ~nonRigid
+            ref.alignment(doInd).CorrMap_footprints = CorrMap_foot;
+            ref.alignment(doInd).CorrMap_centroid = CorrMap_cent;
+        else 
+            ref.alignment(doInd).CorrMap = CorrMap_cent;
+        end
 %         save('temporaryAlignmentMap','alignmentMap')
         save(sessions{1},'-struct','ref','-v7.3');
     end
