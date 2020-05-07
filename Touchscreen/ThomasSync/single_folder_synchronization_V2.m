@@ -22,7 +22,8 @@ function single_folder_synchronization_V2(data_dir)
 
 % 1 = show progress, 0 = do not show
 show_progress = 0;
-
+oldcd = pwd;
+cd(data_dir)
 % timestamp file name
 timestamp_file = 'timestamp.dat';
 % schedule.csv file
@@ -209,6 +210,7 @@ if dataset_ok ==1
     disp('Done');
 end
 
+cd(oldcd)
 % ================================= functions =============================
 
 % read the content of timestamp.csv and store it in arrays
