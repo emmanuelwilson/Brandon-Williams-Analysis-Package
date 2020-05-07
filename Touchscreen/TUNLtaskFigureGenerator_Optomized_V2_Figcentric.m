@@ -1,19 +1,39 @@
-% load('ms.mat');
+load('ms.mat');
 % % % load('behav.mat');
-% load('msTouchSync.mat');
+v1 = 0;
+v2 = 0;
+try
+    load('msTouchSync.mat');
+    v1 = 1;
+end
+try
+    load('msTouchSync_new.mat');
+    v2 = 1;
+end
+try 
+    ms = calcium;
+end
 ms = calcium;
-timediff = diff(msTouchSync.timeMap);
-timediffnew = timediff(find(timediff));
-fps = 1/mode(timediffnew);
-% fps = 34;
+if v1    
+    timediff = diff(msTouchSync.timeMap);
+    timediffnew = timediff(find(timediff));
+    fps = round(1/mode(timediffnew));
+    events = msTouchSync.events;
+elseif v2
+    timediff = diff(synchronization.miniscopeMaster.cageTimes);
+    timediffnew = timediff(find(timediff));
+    fps = round(1/mode(timediffnew));
+    events = synchronization.miniscopeMaster.events;
+end
 ticmultiplier = 2;
+
 
 % -------------STEP 3) Reliability ---------------
 
 % Step1: Align data to Anchor points
 % Generate raster plots for all trials and all cells
 
-[Calcium, TrialInds,rawSep,rawCalcium] = TouchRaster_V4(msTouchSync.events,ms,fps,1,1,1,1,1,1);
+[Calcium, TrialInds,rawSep,rawCalcium] = TouchRaster_V4(events,ms,fps,1,1,1,1,1,1);
 save('TouchRasterResults.mat','Calcium','TrialInds')
 save('UncutTraces.mat','rawSep','rawCalcium')
 load('minmax.mat')
@@ -23,8 +43,8 @@ load('SepBack.mat')
 
 % Step2: Find Reliable Cell
 % Cells that pass criteria
-ShuffledCrit = TouchScreenShuffle(ms,msTouchSync.events,TrialInds);
-ShuffledCritSep = TouchScreenShuffleSeperation_V2(SepDelay,SepFront,SepBack,ms,TrialInds,msTouchSync.events);
+ShuffledCrit = TouchScreenShuffle(ms,events,TrialInds);
+ShuffledCritSep = TouchScreenShuffleSeperation_V2(SepDelay,SepFront,SepBack,ms,TrialInds,events);
 save('ShuffledCrit.mat','ShuffledCrit','ShuffledCritSep')
 
 %Figure1: Seqence of population data
