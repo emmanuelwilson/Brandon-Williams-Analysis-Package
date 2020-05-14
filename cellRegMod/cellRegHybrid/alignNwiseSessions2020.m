@@ -10,9 +10,14 @@ function alignNwiseSessions2020(path,nFold)
     for i = length(paths):-1:1
         if contains(paths{i},'OriginalFiles')
             paths(i) = [];
+        elseif contains(paths{i},'Segments')
+            paths(i) = [];
+        elseif contains(paths{i},'tempfigs')
+            paths(i) = [];
+        elseif contains(paths{i},'Results')
+            paths(i) = [];
         end        
     end
-    paths
     prompt = 'Non-Rigid Registration?:Y/N ';
     str = input(prompt,'s');
     if isempty(str) || str == 'Y' || str == 'y'

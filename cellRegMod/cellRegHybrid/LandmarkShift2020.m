@@ -13,6 +13,47 @@ function Shift = LandmarkShift2020(folderpath)
 folder = dir(folderpath);                                                   %List folder contents
 sessions = {folder(3:end).name};                                            %Seperate folder contents
 sessions = sessions(2:end);
+for i = length(folder):-1:1
+    if contains(folder(i).name,'Segments')
+        try
+            rmdir([folder(i).folder,'\',folder(i).name])
+            for j = length(sessions) :-1:1
+                if contains(sessions{j},folder(i).name)
+                    sessions(j) = [];
+                end
+            end
+        catch
+            for j = length(sessions) :-1:1
+                if contains(sessions{j},folder(i).name)
+                    sessions(j) = [];
+                end
+            end
+        end
+    elseif contains(folder(i).name,'tempfigs')
+        try
+            rmdir([folder(i).folder,'\',folder(i).name])
+            for j = length(sessions) :-1:1
+                if contains(sessions{j},folder(i).name)
+                    sessions(j) = [];
+                end
+            end
+        catch
+            for j = length(sessions) :-1:1
+                if contains(sessions{j},folder(i).name)
+                    sessions(j) = [];
+                end
+            end
+        end
+    end
+    rehash();
+end
+
+for j = length(sessions) :-1:1
+    if contains(sessions{j},'Results')
+        sessions(j) = [];
+    end
+end
+            
 Shift = [];
 count = 0;
 msflag = 0;
