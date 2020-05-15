@@ -5,9 +5,11 @@ v2 = 0;
 try
     load('msTouchSync.mat');
     v1 = 1;
+    v2 = 0;
 end
 try
     load('msTouchSync_new.mat');
+    v1 = 0;
     v2 = 1;
 end
 try 
