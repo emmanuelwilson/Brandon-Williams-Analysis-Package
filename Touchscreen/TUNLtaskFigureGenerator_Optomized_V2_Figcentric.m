@@ -15,7 +15,7 @@ end
 try 
     ms = calcium;
 end
-ms = calcium;
+% ms = calcium;
 if v1    
     timediff = diff(msTouchSync.timeMap);
     timediffnew = timediff(find(timediff));

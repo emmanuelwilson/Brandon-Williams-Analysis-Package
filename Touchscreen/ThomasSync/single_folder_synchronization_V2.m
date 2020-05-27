@@ -1543,25 +1543,29 @@ cd(oldcd)
                     [a,b]=strtok(arg(group(find(contains(eventname(group),'Touch Down Event')+i-1,1))),['Image' 'Position']);
                     my_events(eventInd(i),4) = strtok(a);
                 elseif ~isempty(find(contains(eventname(group),'Touch Down Event'),1))
-                    group2 = find(eventInd == eventInd(max(group)+1));
-                    if ~isempty(find(contains(item_name(group2),'Incorrect'),1)) && ~isempty(find(contains(item_name(group),'Start Delay'),1))
+                    if max(group) < length(eventInd)
+                        group2 = find(eventInd == eventInd(max(group)+1));
+                    else
+                        group2 = [];
+                    end
+                    if ~isempty(group2) && ~isempty(find(strcmp(item_name(group2),'Incorrect'),1)) && ~isempty(find(contains(item_name(group),'Start Delay'),1))
                         my_events(eventInd(i),2) = timeMap(eventInd(i));
                         my_events(eventInd(i),3) = 'Nose-Poke Incorrect';
                         [a,b]=strtok(arg(group(find(contains(eventname(group),'Touch Down Event')+i-1,1))),['Image' 'Position']);
                         my_events(eventInd(i),4) = strtok(a);
                         my_events(eventInd(i),6) = 1;
-                    elseif ~isempty(find(contains(item_name(group2),'Correct'),1))&& ~isempty(find(contains(item_name(group),'Start Delay'),1))
+                    elseif ~isempty(group2) && ~isempty(find(strcmp(item_name(group2),'Correct'),1))&& ~isempty(find(contains(item_name(group),'Start Delay'),1))
                         my_events(eventInd(i),2) = timeMap(eventInd(i));
                         my_events(eventInd(i),3) = 'Nose-Poke Correct';
                         [a,b]=strtok(arg(group(find(contains(eventname(group),'Touch Down Event')+i-1,1))),['Image' 'Position']);
                         my_events(eventInd(i),4) = strtok(a);
                         my_events(eventInd(i),6) = 1;
-                    elseif ~isempty(find(contains(item_name(group2),'Incorrect'),1)) && isempty(find(contains(item_name(group2),'Next trial'),1))
+                    elseif ~isempty(group2) && ~isempty(find(strcmp(item_name(group2),'Incorrect'),1)) && isempty(find(contains(item_name(group2),'Next trial'),1))
                         my_events(eventInd(i),2) = timeMap(eventInd(i));
                         my_events(eventInd(i),3) = 'Nose-Poke Incorrect';
                         [a,b]=strtok(arg(group(find(contains(eventname(group),'Touch Down Event')+i-1,1))),['Image' 'Position']);
                         my_events(eventInd(i),4) = strtok(a);
-                    elseif ~isempty(find(contains(item_name(group2),'Correct'),1)) && isempty(find(contains(item_name(group2),'Next trial'),1))
+                    elseif ~isempty(group2) && ~isempty(find(strcmp(item_name(group2),'Correct'),1)) && isempty(find(contains(item_name(group2),'Next trial'),1))
                         my_events(eventInd(i),2) = timeMap(eventInd(i));
                         my_events(eventInd(i),3) = 'Nose-Poke Correct';
                         [a,b]=strtok(arg(group(find(contains(eventname(group),'Touch Down Event')+i-1,1))),['Image' 'Position']);
