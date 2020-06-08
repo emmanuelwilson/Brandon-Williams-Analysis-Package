@@ -88,12 +88,11 @@ end
 combs = nchoosek(1:length(sessions),nFold);
 
 [wShift,hShift] = msAlignBetweenSessions2020(sessions,combs);
-shifts = cell(length(sessions),length(sessions),2);
+shifts = cell(length(sessions),length(sessions));
 for i = 1 : length(combs)
     s = sessions{combs(i,2)};
-    ms = SFPshift(s,[wShift(combs(i,1),combs(i,2)),hShift(combs(i,1),combs(i,2))]);
-    shifts{combs(i,1),combs(i,2),1} = sessions{combs(i,1)}.SFPs;
-    shifts{combs(i,1),combs(i,2),2} = ms.SFPs;
+    ms = SFPshift(s,[wShift(combs(i,1),combs(i,2)),hShift(combs(i,1),combs(i,2))]);    
+    shifts{combs(i,1),combs(i,2)} = ms.SFPs;
 end
 save([folderpath,'/'],'shifts')
 

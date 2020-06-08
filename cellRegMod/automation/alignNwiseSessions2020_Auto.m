@@ -36,7 +36,7 @@ cormat = diag(max(max(combs)));
 %         fprintf(['\t\tSession:  ' sessions{combs(si,1)}(find(ismember(sessions{combs(si,1)},'/'),1,'last')+1:end) '\n'])
         ref = sessions{combs(si,1)};%,'calcium','processed');        
         preppedr = ref.SFPs .* bsxfun(@gt,ref.SFPs,0.5.*nanmax(nanmax(ref.SFPs,[],1),[],2));
-        move = SFPsShifted{combs(si,1),combs(si,2),2};%,'calcium','processed');        
+        move = SFPsShifted{combs(si,1),combs(si,2)};%,'calcium','processed');        
         preppedm = move.* bsxfun(@gt,move,0.5.*nanmax(nanmax(move,[],1),[],2));
         [cellmapr,excluder] = msExtractSFPsCellReg2020(preppedr);
         [cellmapm,excludem] = msExtractSFPsCellReg2020(preppedm);
@@ -156,9 +156,9 @@ cormat = diag(max(max(combs)));
         alignmentMap(si) = nm;
         probMap(si) = nmp;
         scoreMap(combs(si,1),combs(si,2)) = nmp;
-        CorrMap_cent = nmc_cent;
+        CorrMap_cent(combs(si,1),combs(si,2)) = nmc_cent;
         if ~nonRigid
-            CorrMap_foot = nmc_foot;
+            CorrMap_foot(combs(si,1),combs(si,2)) = nmc_foot;
         end
     end
     %{
