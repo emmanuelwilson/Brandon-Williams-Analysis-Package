@@ -33,6 +33,8 @@ cormat = diag(max(max(combs)));
     
 %     allPrepped  = cell(length(combs(:,1)));%= repmat({[]},[1 length(sessions)]);
     for si = 1:length(combs(:,1))
+        if si == 17
+        end
 %         fprintf(['\t\tSession:  ' sessions{combs(si,1)}(find(ismember(sessions{combs(si,1)},'/'),1,'last')+1:end) '\n'])
         ref = sessions{combs(si,1)};%,'calcium','processed');        
         preppedr = ref.SFPs .* bsxfun(@gt,ref.SFPs,0.5.*nanmax(nanmax(ref.SFPs,[],1),[],2));
@@ -67,16 +69,30 @@ cormat = diag(max(max(combs)));
         itermap = repmat({[]},[1 iters]);
         iterstruct = repmat({[]},[1 iters]);
         
-        preppedr = permute(sessions{combs(si,1)}.SFPs,[3 1 2]);
-        preppedr = preppedr(outofFOVr.exclude_all{si},:,:);
-        outP = [path '\Segments\ms' num2str(combs(si,1))];% num2str(find(si == combs(i,:)))];
-        checkP(outP)
-        save(outP,'preppedr');
-        
-        preppedm = allPrepped;
-        outP = [path '\Segments\ms' num2str(combs(si,2))];% num2str(find(si == combs(i,:)))];
-        checkP(outP)
-        save(outP,'preppedm');
+        if combs(si,1) > 9
+            preppedr = permute(sessions{combs(si,1)}.SFPs,[3 1 2]);
+            preppedr = preppedr(outofFOVr.exclude_all{si},:,:);
+            outP = [path '\Segments\ms' num2str(combs(si,1))];% num2str(find(si == combs(i,:)))];
+            checkP(outP)
+            save(outP,'preppedr');
+        else
+            preppedr = permute(sessions{combs(si,1)}.SFPs,[3 1 2]);
+            preppedr = preppedr(outofFOVr.exclude_all{si},:,:);
+            outP = [path '\Segments\ms0' num2str(combs(si,1))];% num2str(find(si == combs(i,:)))];
+            checkP(outP)
+            save(outP,'preppedr');
+        end
+        if combs(si,2) > 9            
+            preppedm = allPrepped;
+            outP = [path '\Segments\ms' num2str(combs(si,2))];% num2str(find(si == combs(i,:)))];
+            checkP(outP)
+            save(outP,'preppedm');
+        else
+            preppedm = allPrepped;
+            outP = [path '\Segments\ms0' num2str(combs(si,2))];% num2str(find(si == combs(i,:)))];
+            checkP(outP)
+            save(outP,'preppedm');
+        end
         
         mkdir(path,'tempfigs')
         parfor iteration = 1:iters
