@@ -12,7 +12,7 @@ function Shift = LandmarkShift2020(folderpath)
 
 folder = dir(folderpath);                                                   %List folder contents
 sessions = {folder(3:end).name};                                            %Seperate folder contents
-sessions = sessions(2:end);
+% sessions = sessions(2:end);
 for i = length(folder):-1:1
     if contains(folder(i).name,'Segments')
         try
@@ -42,6 +42,12 @@ for i = length(folder):-1:1
                 if contains(sessions{j},folder(i).name)
                     sessions(j) = [];
                 end
+            end
+        end
+    elseif contains(folder(i).name,'OriginalFiles')
+        for j = length(sessions) :-1:1
+            if contains(sessions{j},folder(i).name)
+                sessions(j) = [];
             end
         end
     end
