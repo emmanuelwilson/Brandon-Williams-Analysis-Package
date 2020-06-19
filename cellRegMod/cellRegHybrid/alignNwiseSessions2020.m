@@ -127,18 +127,18 @@ function alignNwiseSessions2020(path,nFold)
                 save(outP,'prepped'); 
             end
             mkdir(path,'tempfigs')
-            for iteration = 1:iters
-%                 try
+            parfor iteration = 1:iters
+                try
                     if nonRigid
-                        [map, regStruct] = registerCellsNoGUI2020([upiece{mi} '\Segments' ]);
+                        [itter_map, regStruct] = registerCellsNoGUI2020_Auto([upiece{mi} '\Segments' ]);
                     else
-                        [map, regStruct] = registerCells2020([upiece{mi} '\Segments' ]);
+                        [itter_map, regStruct] = registerCells2020_Auto([upiece{mi} '\Segments' ]);
                     end
-%                 catch
-%                     map = [];
-%                     regStruct = [];
-%                 end
-                itermap{iteration} = map;
+                catch
+                    itter_map = []
+                    regStruct = [];
+                end
+                itermap{iteration} = itter_map;
                 iterstruct{iteration} = regStruct;
                 close all
                 close all hidden
@@ -150,6 +150,7 @@ function alignNwiseSessions2020(path,nFold)
             end
             iterstruct = iterstruct(~cellfun(@isempty,itermap));
             itermap = itermap(~cellfun(@isempty,itermap));
+            trialInd = find(~cellfun(@isempty,itermap));
             
             [a, b] = nanmin(cellfun(@length,itermap));
 %             [a b] = nanmax(scores);
@@ -163,7 +164,7 @@ function alignNwiseSessions2020(path,nFold)
                 for s = 1 : length(iterstruct{b}.p_same_registered_pairs)
                     probtemp(s,:) = nanmean(iterstruct{b}.p_same_registered_pairs{s});
                 end
-                copyfile([path,'\tempfigs\',num2str(b)],[path,'\Results\',num2str(combs(i,1)),'_',num2str(combs(i,2))]);
+                copyfile([path,'\tempfigs\',num2str(trialInd(b))],[path,'\Results\',num2str(combs(i,1)),'_',num2str(combs(i,2))]);
 %                 corval = iterstruct{b}.maximal_cross_correlation;
             end
             alignmentMap{i} = map;            

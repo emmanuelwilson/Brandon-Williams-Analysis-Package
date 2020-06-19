@@ -53,7 +53,7 @@ function [optimal_cell_to_index_map, cell_registered_struct] = registerCells2020
     alignment_type='Translations'; % either 'Translations' or 'Translations and Rotations'
     use_parallel_processing=true; % either true or false
     maximal_rotation=30; % in degrees - only relevant if 'Translations and Rotations' is used
-    reference_session_index=randi(length(file_names)); 
+    reference_session_index=1%randi(length(file_names)); 
 
     % Preparing the data for alignment:
     disp('Stage 2 - Aligning sessions')
