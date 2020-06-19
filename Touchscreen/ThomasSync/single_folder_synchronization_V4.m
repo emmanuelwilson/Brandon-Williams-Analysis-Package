@@ -251,7 +251,7 @@ cd(oldcd)
     function disp_timeStpFile(cam,frame,cl,N0,N1)
         
         f = figure(h_timestamp);
-        f.Visible = 'On';
+        f.Visible = 'off';
         subplot(1,6,1)
         temp0 = find(cam==0);
         tframes0 = frame(temp0);
@@ -774,7 +774,7 @@ cd(oldcd)
     function disp_video_stats(msNvid,msNfr,bhNvid,bhNfr,mean_ms,mean_bh)
         
         f = figure(h_videos);
-        f.Visible = 'On';
+        f.Visible = 'off';
         
         subplot(2,5,1)
         
@@ -827,7 +827,7 @@ cd(oldcd)
     function display_nbFrames(N0,N1,msNframes,bhNframes,msNvideos,bhNvideos)
         
         f = figure(h_synchr);
-        f.Visible = 'On';
+        f.Visible = 'off';
         subplot(2,4,1)
         
         % cams are in the order 0, 1, miniscope and behavior
