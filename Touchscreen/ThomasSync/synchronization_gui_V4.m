@@ -1,4 +1,4 @@
-function synchronization_gui()
+function synchronization_gui_V4()
 
 % Function that reads the timestamp.csv, schedules.csv files and videos
 % labeled msCam[].avi and behaviorCam[].avi, and builds synchronization
