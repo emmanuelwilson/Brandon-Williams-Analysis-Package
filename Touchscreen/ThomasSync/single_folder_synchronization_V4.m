@@ -89,7 +89,7 @@ window_size = 100;
 
 
 % read the content of timestamp.csv and store it in arrays
-[camNum_array,frameNum_array,sysClock_array,buffer_array,Ncam0,Ncam1] = read_timestamp([data_dir '\' timestamp_file]);
+[camNum_array,frameNum_array,sysClock_array,buffer_array,Ncam0,Ncam1] = read_timestamp([data_dir '/' timestamp_file]);
 
 
 % text summary of the raw content of the frames/sysClock values for both
@@ -173,7 +173,7 @@ end
 
 % adding the synchronized cage time
 if dataset_ok ==1
-    [synchronization] = compute_cage_time(synchronization,[data_dir '\' schedule_file]);
+    [synchronization] = compute_cage_time(synchronization,[data_dir '/' schedule_file]);
 end
 
 % remove redundant entries at the end of the synchronization matrices
@@ -201,13 +201,13 @@ save_figures;
 % events(:,5) = Trial Start/stop, indicated by a 1
 % events(:,6) = Delay period start/stop (1 = start, 2 = stop)
 if dataset_ok ==1
-    [synchronization] = add_events(synchronization,[data_dir '\' schedule_file]);
+    [synchronization] = add_events(synchronization,[data_dir '/' schedule_file]);
 end
 
 % finally, store the results
 if dataset_ok ==1
-    disp(['Saving the synchronization matrix in file ' data_dir '\msTouchSync_new.mat']);
-    save([data_dir '\msTouchSync_new.mat'],'synchronization');
+    disp(['Saving the synchronization matrix in file ' data_dir '/msTouchSync_new.mat']);
+    save([data_dir '/msTouchSync_new.mat'],'synchronization');
     disp('Done');
 end
 
@@ -490,7 +490,7 @@ cd(oldcd)
     function [msNvideos,msNframes,bhNvideos,bhNframes,mean_ms,mean_bh] = read_videos(vd,N0,N1)
         
         % find avi and dat files
-        aviFiles = dir([vd '\*.avi']);
+        aviFiles = dir([vd '/*.avi']);
         
         % extract the numbers of msCam and behavCam files
         msNums = [];
@@ -557,9 +557,9 @@ cd(oldcd)
                 tic
             end
             
-            avi_name = [vd '\msCam' num2str(msNums(i1)) '.avi'];
-            mat_name = [vd '\msCam' num2str(msNums(i1)) '.mat'];
-            mean_file = [vd '\ms_mean' num2str(msNums(i1)) '.mat'];
+            avi_name = [vd '/msCam' num2str(msNums(i1)) '.avi'];
+            mat_name = [vd '/msCam' num2str(msNums(i1)) '.mat'];
+            mean_file = [vd '/ms_mean' num2str(msNums(i1)) '.mat'];
             
             % extract the number of frames in the video
             msvidObj = VideoReader(avi_name);
@@ -663,9 +663,9 @@ cd(oldcd)
                 tic
             end
             
-            avi_name = [vd '\behavCam' num2str(bhNums(i1)) '.avi'];
-            mat_name = [vd '\behavCam' num2str(bhNums(i1)) '.mat'];
-            mean_file = [vd '\bh_mean' num2str(bhNums(i1)) '.mat'];
+            avi_name = [vd '/behavCam' num2str(bhNums(i1)) '.avi'];
+            mat_name = [vd '/behavCam' num2str(bhNums(i1)) '.mat'];
+            mean_file = [vd '/bh_mean' num2str(bhNums(i1)) '.mat'];
             
             % extract the number of frames in the video
             bhvidObj = VideoReader(avi_name);
@@ -1620,18 +1620,18 @@ cd(oldcd)
         
         figure(h_synchr);
         img = getframe(gcf);
-        imwrite(img.cdata,[data_dir '\summary_synchronization.png']);
-        savefig([data_dir '\summary_synchronization.fig']);
+        imwrite(img.cdata,[data_dir '/summary_synchronization.png']);
+        savefig([data_dir '/summary_synchronization.fig']);
         
         figure(h_videos);
         img = getframe(gcf);
-        imwrite(img.cdata,[data_dir '\summary_videos.png']);
-        savefig([data_dir '\summary_videos.fig']);
+        imwrite(img.cdata,[data_dir '/summary_videos.png']);
+        savefig([data_dir '/summary_videos.fig']);
         
         figure(h_timestamp);
         img = getframe(gcf);
-        imwrite(img.cdata,[data_dir '\summary_timestamp.png']);
-        savefig([data_dir '\summary_timestamp.fig']);
+        imwrite(img.cdata,[data_dir '/summary_timestamp.png']);
+        savefig([data_dir '/summary_timestamp.fig']);
         
     end
 
