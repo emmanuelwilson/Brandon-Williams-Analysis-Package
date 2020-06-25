@@ -4,7 +4,7 @@ folder = dir(pwd);
 oldCD = pwd;
 for i = 3 : length(folder)
     if folder(i).isdir == 1
-        subdir = [pwd,'\',folder(i).name];
+        subdir = [pwd,'/',folder(i).name];
         subfolder = dir(subdir);
         fnames = {subfolder.name};
         if isempty(find(strcmp(fnames,'msTouchSync_new.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp.dat',1),1))
