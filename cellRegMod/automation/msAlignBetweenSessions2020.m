@@ -152,7 +152,7 @@ function [wShift,hShift] = msAlignBetweenSessions2020(sessions,combs)
             refft = refFrame;
             
             [optimizer,metric] = imregconfig('multimodal');
-%             optimizer.InitialRadius = 0.009;
+            optimizer.InitialRadius = 0.001;
 %             optimizer.Epsilon = 1.5e-4;
 %             optimizer.GrowthFactor = 1.01;
 %             optimizer.MaximumIterations = 500;

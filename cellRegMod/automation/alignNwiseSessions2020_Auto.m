@@ -170,7 +170,9 @@ cormat = diag(max(max(combs)));
             nmc_foot = bcorr_foot;
         end
         alignmentMap(si) = nm;
-        probMap(si) = nmp;
+        try
+            probMap(si) = nmp;
+        end
         scoreMap(combs(si,1),combs(si,2)) = nmp;
         CorrMap_cent(combs(si,1),combs(si,2)) = nmc_cent;
         if ~nonRigid
