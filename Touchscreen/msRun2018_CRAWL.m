@@ -6,7 +6,7 @@ folder = dir(pwd);                                                         %List
 oldCD = pwd;                                                               %Save path to directory
 for i = 3 : length(folder)                                                 %Look through folder items
     if folder(i).isdir == 1                                                %Will proceed only if folder item is another folder/directory
-        subdir = [pwd,'\',folder(i).name];                                 %file path
+        subdir = [pwd,'/',folder(i).name];                                 %file path
         subfolder = dir(subdir);                                           %List subfolder contents
         fnames = {subfolder.name};                                         %List subfolder item names
         if isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp',1),1)) %Will proceed if no structure is present and timestamp file being present
