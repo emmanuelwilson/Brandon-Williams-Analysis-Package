@@ -73,7 +73,7 @@ if copy_to_googledrive;
 end
 
 %% 4 - Cleanup temporary files
-rmdir([ms.dirName separator ms.analysis_time], 's');
+% rmdir([ms.dirName separator ms.analysis_time], 's');
 
 %% 5 - Analyse behavior (optional)
 if analyse_behavior
