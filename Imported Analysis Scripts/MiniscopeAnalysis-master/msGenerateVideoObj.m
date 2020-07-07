@@ -7,8 +7,8 @@ function ms = msGenerateVideoObj(dirName, filePrefix)
     MAXFRAMESPERFILE = 1000; %This is set in the miniscope control software
     
     % find avi and dat files
-    aviFiles = dir([dirName filesep '*.avi']);
-    datFiles = dir([dirName filesep '*.dat']);
+    aviFiles = dir([dirName '/*.avi']);
+    datFiles = dir([dirName '/*.dat']);
     
     ms.numFiles = 0;
     ms.numFrames = 0;
