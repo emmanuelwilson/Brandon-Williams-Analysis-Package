@@ -21,11 +21,11 @@ function msRun2020(p)
 oldcd = pwd;
 cd(p)
 
-if ispc
-    separator = '\'; % For pc operating systems
-else
+% if ispc
+%     separator = '\'; % For pc operating systems
+% else
     separator = '/'; % For unix (mac, linux) operating systems
-end
+% end
 
 
 
