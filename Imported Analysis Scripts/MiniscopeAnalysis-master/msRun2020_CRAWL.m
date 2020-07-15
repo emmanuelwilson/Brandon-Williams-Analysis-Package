@@ -5,7 +5,7 @@ function [] = msRun2020_CRAWL(p)
 
 folder = dir(p);                                                         %List contents of your current folder
 oldCD = pwd;                                                               %Save path to directory
-parfor i = 3 : length(folder)                                                 %Look through folder items
+for i = 3 : length(folder)                                                 %Look through folder items
     if folder(i).isdir == 1                                                %Will proceed only if folder item is another folder/directory
         subdir = [p,'/',folder(i).name];                                 %file path
         subfolder = dir(subdir);                                           %List subfolder contents
