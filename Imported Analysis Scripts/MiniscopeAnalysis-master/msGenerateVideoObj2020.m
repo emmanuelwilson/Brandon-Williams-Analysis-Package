@@ -23,7 +23,7 @@ function ms = msGenerateVideoObj2020(dirName, filePrefix)
             ms.numFiles = max([ms.numFiles str2double(aviFiles(i).name((length(filePrefix)+1):endIndex))]);
         end
     end
-    
+    ms.numFiles = ms.numFiles+1;
     %generate a vidObj for each video file. Also calculate total frames
     for i=1:ms.numFiles
 %         [folder filesep num2str(filePrefix) num2str(i) '.avi']

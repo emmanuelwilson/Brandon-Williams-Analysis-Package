@@ -46,7 +46,7 @@ save([ms.dirName separator 'ms.mat'],'ms');
 
 %% 2 - Perform motion correction using NormCorre
 display('Step 2: Motion correction');
-ms = msNormCorre(ms,isnonrigid);
+ms = msNormCorre2020(ms,isnonrigid);
 
 %% 3 - Perform CNMFE
 display('Step 3: CNMFE');
