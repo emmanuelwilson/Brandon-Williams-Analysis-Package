@@ -11,18 +11,20 @@ paths = genpath(startPath);
 folders = strsplit(paths,';')';
 
 for i = 1 : length(folders)
-    d = dir(folders{i});
-    fnames = {d.name};
-    if ~isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp',1),1))
-        load([folders{i} '/ms.mat']);
-        s.calcium = ms;
-        s = alignTraceData_noTracking(folders{i},s);
-        s = Emm_converter_excludeSFPs(folders(i),s);
-        if ispc
-            varnames = strsplit(folders{i},'\');
-        else
-            varnames = strsplit(folders{i},'/');
+    if ~isempty(folders{i})
+        d = dir(folders{i});
+        fnames = {d.name};
+        if ~isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp',1),1))
+            load([folders{i} '/ms.mat']);
+            s.calcium = ms;
+            s = alignTraceData_noTracking(folders{i},s);
+            s = Emm_converter_excludeSFPs(folders(i),s);
+            if ispc
+                varnames = strsplit(folders{i},'\');
+            else
+                varnames = strsplit(folders{i},'/');
+            end
+            save([endPath,'/',varnames{end},'.mat'],'-struct','s','-v7.3');
         end
-        save([endPath,'/',varnames{end}],'-struct','s','-v7.3');
     end
 end
