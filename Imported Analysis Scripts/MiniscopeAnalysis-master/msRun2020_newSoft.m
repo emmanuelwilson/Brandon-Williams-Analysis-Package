@@ -16,6 +16,11 @@
 % later version.
 % Contact: etterguillaume@gmail.com
 
+function msRun2020_newSoft(p)
+%% Auto-detect operating system
+oldcd = pwd;
+cd(p)
+
 %% Auto-detect operating system
 if ispc
     separator = '\'; % For pc operating systems
@@ -66,9 +71,9 @@ if copy_to_googledrive;
     copyfile('SFP.mat', [destination_path separator 'SFP.mat']);
     disp('Successfully copied ms and SFP files to GoogleDrive');
     try % This is to attempt to copy an existing behav file if you already analyzed it in the past
-            copyfile([ms.dirName separator 'behav.mat'], [destination_path separator 'behav.mat']);
-        catch
-            disp('Behavior not analyzed yet. No files will be copied.');
+        copyfile([ms.dirName separator 'behav.mat'], [destination_path separator 'behav.mat']);
+    catch
+        disp('Behavior not analyzed yet. No files will be copied.');
     end
 end
 
@@ -88,4 +93,5 @@ if analyse_behavior
         copyfile('behav.mat', [destination_path separator 'behav.mat']);
         disp('Successfully copied behav file to GoogleDrive');
     end
+end
 end
