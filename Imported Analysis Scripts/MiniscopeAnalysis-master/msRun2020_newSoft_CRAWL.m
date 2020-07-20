@@ -3,7 +3,7 @@
 
 function [] = msRun2020_newSoft_CRAWL(p)
 
-paths = genpath(startPath);
+paths = genpath(p);
 folders = strsplit(paths,';')';
 
 for i = 1 : length(folders)
@@ -11,13 +11,12 @@ for i = 1 : length(folders)
         d = dir(folders{i});
         fnames = {d.name};
         if isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp',1),1))
-            cd([p,'/',folder(i).name]);                                  %Change current folder
+            cd(folders{i});                                  %Change current folder
             try
                 msRun2020_newSoft(pwd)                                                      %Run analysis
             catch
-                display([p,'/',folder(i).name,' Failed to analize'])
-            end
-            cd(oldCD);
+                display([folders{i},' Failed to analize'])
+            end            
         end
     end
 end
