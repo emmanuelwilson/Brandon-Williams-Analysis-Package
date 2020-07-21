@@ -7,8 +7,8 @@ paths = genpath(p);
 folders = strsplit(paths,';')';
 
 for i = 1 : length(folders)
-    if ~isempty(folders{i})
-        folders{i}
+    folders{i}
+    if ~isempty(folders{i})        
         d = dir(folders{i});
         fnames = {d.name};
         if isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp',1),1))
