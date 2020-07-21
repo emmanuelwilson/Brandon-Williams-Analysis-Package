@@ -2,8 +2,7 @@
 %Must have all wanted folders and subfolders to run CNMFE on in the given path
 
 function [] = msRun2020_newSoft_CRAWL(p)
-p
-paths = genpath(p)
+paths = genpath(p);
 if ispc
     folders = strsplit(paths,';')';
 else
