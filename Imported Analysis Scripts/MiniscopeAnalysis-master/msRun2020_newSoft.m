@@ -61,6 +61,8 @@ msExtractSFPs(ms); % Extract spatial footprints for subsequent re-alignement
 analysis_duration = toc(script_start);
 ms.analysis_duration = analysis_duration;
 
+ms = msdeconvolve(ms);
+
 save([ms.dirName separator 'ms.mat'],'ms','-v7.3');
 disp(['Data analyzed in ' num2str(analysis_duration) 's']);
 
