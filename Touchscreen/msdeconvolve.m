@@ -10,7 +10,7 @@
 function [ms] = msdeconvolve(ms)
 
 for i = 1 : ms.numNeurons
-    [ms.deconvolution.denoisedCa(:,i),ms.deconvolution.deconvolvedSig(:,i)] = deconvolveCa( ms.FiltTraces(:,i), 'ar2');
+    [ms.denoisedCa(:,i),ms.deconvolvedSig(:,i)] = deconvolveCa( ms.FiltTraces(:,i), 'ar2');
 end
 
 end
