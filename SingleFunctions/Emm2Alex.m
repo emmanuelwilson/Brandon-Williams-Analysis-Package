@@ -14,11 +14,15 @@ for i = 1 : length(folders)
     if ~isempty(folders{i})
         d = dir(folders{i});
         fnames = {d.name};
-        if ~isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp',1),1))
+        if ~isempty(find(strcmp(fnames,'ms.mat'),1)) %&& ~isempty(find(strncmp(fnames,'timestamp',1),1))
             load([folders{i} '/ms.mat']);
+            
+            ms = msdeconvolve(ms);
             s.calcium = ms;
+            s.calcium.trace = ms.FiltTraces';
             s = alignTraceData_noTracking(folders{i},s);
-            s = Emm_converter_excludeSFPs(folders(i),s);
+            s = Emm_converter_excludeSFPs(folders(i),s);            
+            s.processed.trace = ms.deconvolvedSig';
             if ispc
                 varnames = strsplit(folders{i},'\');
             else

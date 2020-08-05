@@ -63,7 +63,11 @@ function s = alignTraceData_noTracking(doPath,s)
     
 %     s.processed.p = [linX'; linY'];
 % % %     s.processed.p = [unX'; unY'];
-    s.processed.trace = s.calcium.trace(traceFrames(:,1),:)';
+    if isfield(s,'deconvolvedSig')
+        s.processed.trace = s.calcium.deconvolvedSig(traceFrames(:,1),:)';
+    else
+        s.processed.trace = s.calcium.trace(traceFrames(:,1),:)';
+    end
     s.processed.validTraceFrames = traceFrames;
     s.processed.posFrames = posFrames;
 %     s.properties.partitions = [find(diff(posFrames(:,2))>300) length(posFrames(:,2))];
