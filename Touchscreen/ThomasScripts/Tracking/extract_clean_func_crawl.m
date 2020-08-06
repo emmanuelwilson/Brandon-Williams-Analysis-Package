@@ -244,8 +244,8 @@ for directory = 1:length(paths)
             end
             
             % save the results
-            save([my_path 'filt_traj.mat'],'filt_traj');
-            save([my_path 'bad_data.mat'],'bad_data');
+            save([my_path '/filt_traj.mat'],'filt_traj');
+            save([my_path '/bad_data.mat'],'bad_data');
             
             % display stats on where and how much the bad trajectory is
             figure('Position',[300 500 1000 500])
@@ -278,7 +278,7 @@ for directory = 1:length(paths)
             title(my_path)
             drawnow
             img = getframe(gcf);
-            imwrite(img.cdata,[my_path 'summary_bad_data.png']);
+            imwrite(img.cdata,[my_path '/summary_bad_data.png']);
             close all
             
             % also plot the mean intensity, the houselight extracted from it, and
@@ -293,7 +293,7 @@ for directory = 1:length(paths)
             title(my_path)
             drawnow
             img = getframe(gcf);
-            imwrite(img.cdata,[my_path 'summary_masking.png']);
+            imwrite(img.cdata,[my_path '/summary_masking.png']);
             close all
             
             % It would be nice to have some kind of means to verify a little what
@@ -304,7 +304,7 @@ for directory = 1:length(paths)
                 frame = 0;
                 for v=1:Nvid
                     
-                    my_file = [my_path 'behavCam' num2str(v) '.avi'];
+                    my_file = [my_path '/behavCam' num2str(v) '.avi'];
                     
                     disp([num2str(v) '/' num2str(Nvid) ' - ' my_file]);
                     
