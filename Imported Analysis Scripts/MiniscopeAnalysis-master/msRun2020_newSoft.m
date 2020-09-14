@@ -55,7 +55,7 @@ ms = msNormCorre2020(ms,isnonrigid);
 
 %% 3 - Perform CNMFE
 display('Step 3: CNMFE');
-ms = msRunCNMFE_large_NewSoft(ms);
+ms = msRunCNMFE_large_Newsoft(ms);
 msExtractSFPs(ms); % Extract spatial footprints for subsequent re-alignement
 
 analysis_duration = toc(script_start);
@@ -67,7 +67,7 @@ temp1 = interp1(x,ms.FiltTraces,xq);
 ms.FiltTraces = interp1(xq,temp1,x);
 ms.FiltTraces(find(isnan(ms.FiltTraces))) = 0;
 
-ms = msdeconvolve(ms);
+% ms = msdeconvolve(ms);
 
 save([ms.dirName separator 'ms.mat'],'ms','-v7.3');
 disp(['Data analyzed in ' num2str(analysis_duration) 's']);
