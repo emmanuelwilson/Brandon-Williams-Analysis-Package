@@ -30,7 +30,7 @@ nam = neuron.select_data(nam);  %if nam is [], then select data interactively
 % -------------------------    COMPUTATION    -------------------------  %
 pars_envs = struct('memory_size_to_use', 12, ...   % GB, memory space you allow to use in MATLAB
     'memory_size_per_patch', 0.6, ...   % GB, space for loading data within one patch
-    'patch_dims', [12, 12]);  %GB, patch size
+    'patch_dims', [10, 10]);  %GB, patch size
 
 % -------------------------      SPATIAL      -------------------------  %
 include_residual = false; % If true, look for neurons in the residuals
