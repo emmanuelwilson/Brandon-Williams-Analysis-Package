@@ -123,6 +123,12 @@ cormat = diag(max(max(combs)));
         [a, b] = nanmin(cellfun(@length,itermap));
         %             [a b] = nanmax(scores);
         if ~isempty(b)
+            while isempty(itermap{b})
+                itermap(b) = [];
+                iterstruct(b) = [];
+                itterind(b) = [];
+                [a, b] = nanmin(cellfun(@length,itermap));
+            end
             map = itermap{b};
             score = iterstruct{b}.cell_scores;
             corval = iterstruct{b}.maximal_cross_correlation;
@@ -134,6 +140,8 @@ cormat = diag(max(max(combs)));
             end
             copyfile([path,'\tempfigs\',num2str((itterind(b)))],[path,'\Results\',num2str(combs(si,1)),'_',num2str(combs(si,2))]);
             %                 corval = iterstruct{b}.maximal_cross_correlation;
+        else 
+            nothing = 0;
         end
         
         alignmentMap{si} = map;

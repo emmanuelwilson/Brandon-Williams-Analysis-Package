@@ -134,7 +134,31 @@ function [wShift,hShift] = msAlignBetweenSessions2020(sessions,combs)
 %             refRect = [rect(3:4,j)- dh ; rect(1:2,j) - dw];
             refRect = uint16(rectref{j});
             refROI = uint16(refRect);
+            if refROI(1,1) <= 0
+                refROI(1,1) = 1;
+            end
+            if refROI(1,2) <=0
+                refROI(1,2) = 1;
+            end
+            if refROI(1,3) <=0
+                refROI(1,3) = 1;
+            end
+            if refROI(1,4) <=0
+                refROI(1,4) = 1;
+            end
             
+            if ROI(1,1) <= 0
+                ROI(1,1) = 1;
+            end
+            if ROI(1,2) <=0
+                ROI(1,2) = 1;
+            end
+            if ROI(1,3) <=0
+                ROI(1,3) = 1;
+            end
+            if ROI(1,4) <=0
+                ROI(1,4) = 1;
+            end
 %             refFrame = (filter2(hSmall,refFrame) - filter2(hLarge, refFrame));
             
             
