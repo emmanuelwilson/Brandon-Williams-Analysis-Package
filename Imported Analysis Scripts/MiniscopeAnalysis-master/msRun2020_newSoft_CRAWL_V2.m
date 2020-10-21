@@ -14,11 +14,7 @@ for i = 1 : length(folders)
         folders{i}
         d = dir(folders{i});
         fnames = {d.name};
-<<<<<<< Updated upstream
         if isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(contains(folders{i},'Miniscope_2'),1)) %&& ~isempty(find(strncmp(fnames,'timeStamps.csv',9),1)) && ~isempty(find(contains(folders{i},'Miniscope'),1))
-=======
-        if isempty(find(strcmp(fnames,'ms.mat'),6)) && ~isempty(find(strncmp(fnames,'timeStamp',9),1)) && ~isempty(find(contains(folders{i},'Miniscope_2'),1))
->>>>>>> Stashed changes
             cd(folders{i});                                  %Change current folder
             try
                 msRun2020_newSoft(pwd)                                                      %Run analysis
