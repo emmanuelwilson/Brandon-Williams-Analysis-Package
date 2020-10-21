@@ -39,10 +39,11 @@ for i=1:length(aviFiles)
     end
 end
 %Write video
-v = VideoWriter([filePrefix,'Cat.avi'],'Indexed AVI');
+v = VideoWriter([filePrefix,'Cat.avi'],'Uncompressed AVI');
+% v.Colormap = bigvid(1).colormap;
 open(v)
 for j = 1 : length(bigvid(:,1))
-    writeVideo(v,bigvid(j))
+    writeVideo(v,bigvid(j).cdata)
 end
 close(v)
 end
