@@ -9,7 +9,7 @@ else
     folders = strsplit(paths,':')';
 end
 for i = 1 : length(folders)
-    folders{i}
+%     folders{i}
     if ~isempty(folders{i})        
         d = dir(folders{i});
         fnames = {d.name};
