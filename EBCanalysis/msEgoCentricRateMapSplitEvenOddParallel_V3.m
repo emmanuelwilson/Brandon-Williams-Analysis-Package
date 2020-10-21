@@ -102,7 +102,8 @@ dis = circshift(dis,90,2);                                                  %shi
 % % % end
 
 %Loop through every cell, extract and analize firing instances and boundary locations
-parfor cellNum = 1 : length(ms.FiltTraces(1,:))
+for cellNum = 1 : length(ms.FiltTraces(1,:))
+%     set(0,'DefaultFigureWindowStyle' , 'normal')
     mspar = ms;
     processed = false;
     stime = tic;
