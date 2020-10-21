@@ -11,7 +11,7 @@ end
 folders
 for i = 1 : length(folders)    
     if ~isempty(folders{i})        
-        folders{i}
+%         folders{i}
         d = dir(folders{i});
         fnames = {d.name};
         if isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(contains(folders{i},'Miniscope_2'),1)) %&& ~isempty(find(strncmp(fnames,'timeStamps.csv',9),1)) && ~isempty(find(contains(folders{i},'Miniscope'),1))
