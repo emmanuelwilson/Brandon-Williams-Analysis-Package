@@ -61,6 +61,7 @@ xq = [1:5:length(ms.FiltTraces(:,1))];
 temp1 = interp1(x,ms.FiltTraces,xq);
 ms.FiltTraces = interp1(xq,temp1,x);
 ms.FiltTraces(find(isnan(ms.FiltTraces))) = 0;
+save([ms.dirName separator 'ms.mat'],'ms','-v7.3');
 
 ms = msdeconvolve(ms);
 

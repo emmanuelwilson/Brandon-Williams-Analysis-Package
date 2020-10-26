@@ -124,7 +124,7 @@ disO = disO*pixX;                                                           %Con
 disO = circshift(disO,90,2);                                                %shifts values by 90 degrees
 
 %Loop through every cell, extract and analize firing instances and boundary locations
-parfor cellNum = 1 : length(ms.FiltTraces(1,:))
+for cellNum = 1 : length(ms.FiltTraces(1,:))
     mspar = ms;                                                             %create parallel ms variable
     processed = false;                                                      %Progress flag
     stime = tic;                                                            %processing time variable
@@ -350,7 +350,7 @@ parfor cellNum = 1 : length(ms.FiltTraces(1,:))
             %Object
             % bring back to original dims
             occO=occO(:,1:end-1);occO=occO';
-            cutout = find(occO<100);
+            cutout = find(occO<0);
             occO(cutout) = 0;
             nspkO=nspkO(:,1:end-1);nspkO=nspkO';
             %first half

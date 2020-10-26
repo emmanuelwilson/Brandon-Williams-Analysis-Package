@@ -295,6 +295,10 @@ if D
         dicctrace(:,:,j) = trace(:,dic(j):dic(j)+dFrames);
     end    
     
+    if length(dicctrace(1,1,:)) == 0
+        dicctrace = [];
+        criRow = [];
+    end
     %Displaying individual trial delays for each cell
     if singleCells
         IndividualDelay = IndividualCells(dctrace,ditrace,dcctrace,dicctrace,minmax, 1,ITI,TimeOut,dirDelay, savefigures,fps,ticmultiplier);
@@ -317,17 +321,23 @@ if D
     rawSep.Dcorrect = sortChoices(dctrace,Ctrial);
     rawSep.Dincorrect = sortChoices(ditrace,Itrial);
     rawSep.DcorrectCor = sortChoices(dcctrace,CCtrial);
-    rawSep.DincorrectCor = sortChoices(dicctrace,ICtrial);        
+    if ~isempty(criRow)
+        rawSep.DincorrectCor = sortChoices(dicctrace,ICtrial);
+    end
     
     rawCal.Dcorrect = dctrace;
     rawCal.Dincorrect = ditrace;
     rawCal.DcorrectCor = dcctrace;
-    rawCal.DincorrectCor = dicctrace;
+    if ~isempty(criRow)
+        rawCal.DincorrectCor = dicctrace;
+    end
     
     dcrast = nanmean(dctrace,3);
     dirast = nanmean(ditrace,3);
     dccrast = nanmean(dcctrace,3);
-    dicrast = nanmean(dicctrace,3);       
+    if ~isempty(criRow)
+        dicrast = nanmean(dicctrace,3);
+    end
     
     %Normalize population level
     for i = 1 : length(dctrace(:,1,1))
@@ -938,7 +948,11 @@ end
 function matrix = sortChoices(cal,choice)
     for i = 1 : length(choice)
         if ~isempty(choice)
-            matrix{i} = cal(:,:,choice{i});
+            if length(cal(1,1,:)) == 0
+                matrix = [];
+            else
+                matrix{i} = cal(:,:,choice{i});
+            end
         end
     end
 end

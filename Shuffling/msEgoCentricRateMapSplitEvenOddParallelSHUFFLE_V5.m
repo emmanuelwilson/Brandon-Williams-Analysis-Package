@@ -35,7 +35,7 @@ fps = 30;                                               %Frames per second
 spf = 1/fps;                                            %Seconds per frame
 ms.timestamp = frameMap.*spf;                           %time stamp in seconds
 minDist = [1:2];
-cutoff = 700;
+cutoff = 0;
 %% FrameMap special case correction
 %IF SPECIAL CASE APPEARS MAKE SURE TO CHECK framemap, ms AND SINKdata ARE
 %CORRECT
@@ -93,7 +93,7 @@ if frameMap(length(frameMap)) < length(ms.FiltTraces)
 end
 
 firing = ms.FiltTraces;
-parfor itteration = 1 : 1000
+parfor itteration = 1 : 100
     shuffledFiring = CShuffle(firing);                                  %Shuffle firing peaks 
     distanceBinspar = distanceBins;
     mrlitt = zeros(length(firing(1,:)),1);

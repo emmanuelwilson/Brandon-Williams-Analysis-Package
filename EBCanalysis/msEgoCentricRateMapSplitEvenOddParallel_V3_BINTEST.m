@@ -19,11 +19,11 @@ if dimX > dimY
 else
     FOVsize = round(dimX/2);
 end
-name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'LargeBlip700'];
+name = ['EBCresultsEvenOddSplitParallel_Deconvolved_Donut3_Bin_D',num2str(round(DistBinSize)),'A',num2str(DegBinSize),'dist1'];
 %% Get behavior information
-ratemaps = zeros(FOVsize/DistBinSize,360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values
-ratemaps1 = zeros(FOVsize/DistBinSize,360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values
-ratemaps2 = zeros(FOVsize/DistBinSize,360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values
+ratemaps = zeros(round(FOVsize/DistBinSize),360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values
+ratemaps1 = zeros(round(FOVsize/DistBinSize),360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values
+ratemaps2 = zeros(round(FOVsize/DistBinSize),360/DegBinSize,length(ms.FiltTraces(1,:)));        %Probability ratemap values
 
 degBins = (-180:DegBinSize:179);                                  %Angle bins for EBC metric polar plot
 degBins = degBins';                                     %reorient bins
@@ -38,7 +38,7 @@ fps = 30;                                               %Frames per second
 spf = 1/fps;                                            %Seconds per frame
 ms.timestamp = frameMap.*spf;                           %time stamp in seconds
 minDist = [1:2];
-cutoff = 700;
+cutoff = 0;
 timevar = [];
 
 %% FrameMap special case correction
@@ -95,7 +95,7 @@ dis = circshift(dis,90,2);                                                  %shi
 
 
 %Loop through every cell, extract and analize firing instances and boundary locations
-parfor ctrack = 1 : length(cellIndex)
+for ctrack = 1 : length(cellIndex)
     cellNum = cellIndex(ctrack);
     mspar = ms;
     processed = false;

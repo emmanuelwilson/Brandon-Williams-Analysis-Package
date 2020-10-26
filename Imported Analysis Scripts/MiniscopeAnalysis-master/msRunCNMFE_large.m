@@ -34,7 +34,7 @@ pars_envs = struct('memory_size_to_use', 12, ...   % GB, memory space you allow 
 
 % -------------------------      SPATIAL      -------------------------  %
 include_residual = false; % If true, look for neurons in the residuals
-gSig = 3;           % pixel, gaussian width of a gaussian kernel for filtering the data. 0 means no filtering
+gSig = 3;           % pixel, gaussian width of a gaussian kernel for filtering the data. 0 means no filtering %3 %15
 gSiz = 15;          % pixel, neuron diameter
 ssub = 1;           % spatial downsampling factor
 with_dendrites = true;   % with dendrites or not

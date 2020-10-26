@@ -160,6 +160,10 @@ disp('Calculating a probabilistic model of the data')
 if strcmp(imaging_technique,'one_photon')
     [spatial_correlations_model_parameters,p_same_given_spatial_correlation,spatial_correlations_distribution,spatial_correlations_model_same_cells,spatial_correlations_model_different_cells,spatial_correlations_model_weighted_sum,MSE_spatial_correlations_model,spatial_correlation_intersection]=...
         compute_spatial_correlations_model_2020(neighbors_spatial_correlations,centers_of_bins);
+    nanfix = isnan(p_same_given_spatial_correlation);
+    if sum(nanfix) > 0
+        p_same_given_spatial_correlation(find(nanfix)) = 0;
+    end
 end
 
 % estimating registration accuracy:
