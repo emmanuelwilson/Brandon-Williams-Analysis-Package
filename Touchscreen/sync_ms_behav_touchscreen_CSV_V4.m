@@ -10,7 +10,7 @@ aviFiles = dir([folderpath '\*.avi']);
 datFiles = dir([folderpath '\*.dat']);
 csvFiles = dir([folderpath '\*.csv']);
 folder = dir(folderpath);
-filePrefix = 'msCam';
+filePrefix = '';
 %Prefix_TUNL = 'CI28759-3_TUNL_J20_CA1_TUNL Mouse Exp 1 Stage 1 S3TTL_D4sec_232.csv';
 
 numFiles = 0;        %Number of relevant .avi files in the folder
@@ -23,13 +23,11 @@ dffframe = [];
 %find the total number of relevant video files
 for i=1:length(aviFiles)
     endIndex = strfind(aviFiles(i).name,'.avi');        %find the name of current .avi file
-    if (~isempty(strfind(aviFiles(i).name,filePrefix)))
-        numFiles = max([numFiles str2double(aviFiles(i).name((length(filePrefix)+1):endIndex))]);     % +1 count for relevant .avi files
-        vidObj{i} = VideoReader([folderpath '\' aviFiles(i).name]);                     %Read .avi video file
-        vidNum = [vidNum i*ones(1,vidObj{i}.NumberOfFrames)];  %Store video index into ms for future use outside this fn
-        frameNum = [frameNum 1:vidObj{i}.NumberOfFrames];      %Current frame # in total
-        numFrames = numFrames + vidObj{i}.NumberOfFrames;      %Total number of frames
-    end
+    numFiles = max([numFiles str2double(aviFiles(i).name((length(filePrefix)+1):endIndex))]);     % +1 count for relevant .avi files
+    vidObj{i} = VideoReader([folderpath '\' aviFiles(i).name]);                     %Read .avi video file
+    vidNum = [vidNum i*ones(1,vidObj{i}.NumberOfFrames)];  %Store video index into ms for future use outside this fn
+    frameNum = [frameNum 1:vidObj{i}.NumberOfFrames];      %Current frame # in total
+    numFrames = numFrames + vidObj{i}.NumberOfFrames;      %Total number of frames
 end
 
 % height = vidObj{1}.Height;        %video dimentions
@@ -37,15 +35,15 @@ end
 
 %read timestamp information
 for i=1:length(csvFiles)
-    if strcmp(csvFiles(i).name,'timeStamp.CSV')
-        fileID = fopen([folderpath '\' datFiles(i).name],'r');         %access dat files
+    if strcmp(csvFiles(i).name,'timeStamps.csv')
+        fileID = fopen([folderpath '\' csvFiles(i).name],'r');         %access dat files
         dataArray = textscan(fileID, '%f%f%f%f%[^\n\r]', 'Delimiter', ',', 'EmptyValue' ,NaN,'HeaderLines' ,1, 'ReturnOnError', false);    %read file and make sure it is not empty        
         frameNum = dataArray{:, 1};     %frame number
         sysClock = dataArray{:, 2};     %system clock
         buffer1 = dataArray{:, 3};      %buffer
         clearvars dataArray;            %clear variables from dataArray
         fclose(fileID);                           
-        if ((frameNum(end)) == numFrames) && (length(frameNum) == numFrames)            
+        if ((frameNum(end))+1 == numFrames) && (length(frameNum) == numFrames)            
             time = sysClock;
             time(1) = 0;
             maxBufferUsed = max(buffer1);            
@@ -58,13 +56,23 @@ end
 
 i = 1;
 Tschedule = readcell([folderpath '\' csvFiles(i).name]);
-
-Evnt_Time = Tschedule(2:end, 1); %time is in: ___
-Evnt_Name = Tschedule(2:end, 3);
-Item_Name = Tschedule(2:end, 4);
-Alias_Name = Tschedule(2:end, 5); %What is alias name?
-Group_ID = Tschedule(2:end, 6);
-Arg1 = Tschedule(2:end,9);
+s = size(Tschedule);
+while s(2) ~= 17    
+    if i > length(csvFiles)
+        break;
+    else
+        i = i +1;
+        Tschedule = readcell([folderpath '\' csvFiles(i).name]);
+        s = size(Tschedule);
+    end        
+end
+Tschedule(1:16,:) = [];
+Evnt_Time = Tschedule(:, 1); %time is in: ___
+Evnt_Name = Tschedule(:, 3);
+Item_Name = Tschedule(:, 4);
+Alias_Name = Tschedule(:, 5); %What is alias name?
+Group_ID = Tschedule(:, 6);
+Arg1 = Tschedule(:,9);
 
 %-----------------------CONVERTING TOUCH SCREEN VARIABLES------------------
 eventTime = zeros(size(Evnt_Time));   %Touchscreen event timestamps
@@ -74,9 +82,8 @@ aliasname = eventname;
 groupID = eventTime;  %Touchscreen event group ID
 arg = eventname;
 
-
 %convert cell arrays into arrays
-for t = 1 : length(eventTime)                                               
+for t = 1 : length(eventTime)    
     eventTime(t) = Evnt_Time{t};
     eventname(t) = Evnt_Name{t};
     item_name(t) = Item_Name{t};
@@ -92,36 +99,17 @@ halfWindow = 500; %what's half window?? half 100 frames from miniscope videos?
 %select shortest video to be baseline frame number index
 %if behav is longer than miniscope, use miniscope time as minimum reference
 %and behav as maximum reference?
-if length(msSync.time) < length(behavSync.time)
-    minRef = msSync.time; %what is this for? 
-    maxRef = behavSync.time;    
-    time = behavSync.time/1000; %why are you using behav for the time?
-else %if time is longer, use miniscope time as reference? 
-    minRef = behavSync.time;
-    maxRef = msSync.time;   
-    time = time/1000;
-end
+minRef = msSync.time; %what is this for?
+time = time/1000;
 
 %filling the frame map
-for i = 1 :(length(minRef))
-    timeDiff = [];
-    for j = 1 : (halfWindow*2)+1
-        if ((i + j - (halfWindow+1)) < 1)
-            timeDiff(j) = NaN;
-        elseif ((i + j - (halfWindow+1)) > length(maxRef))
-            timeDiff(j) = NaN;
-        else
-            timeDiff(j) = abs(minRef(i) - maxRef(i + j - (halfWindow+1)));
-            [minTimeDiff, indMinTimeDiff] = min(timeDiff);
-        end
-    end
-    frameMap(i) = i + (indMinTimeDiff - (halfWindow+1));
-    timeMap(i) = time(i + (indMinTimeDiff - (halfWindow+1)));
-end
+
+frameMap(i) = i + ((halfWindow+1));
+timeMap(i) = time(i + ((halfWindow+1)));
 
 frameMap = frameMap';
 timeMap = timeMap';
-a = [frameMap msSync.time(1:length(frameMap)) behavSync.time(1:length(frameMap))];
+% a = [frameMap msSync.time(1:length(frameMap)) behavSync.time(1:length(frameMap))];
 
 loc = strfind(item_name,'TTL');                                             %find the TTL initialization
 startTime = NaN;        
