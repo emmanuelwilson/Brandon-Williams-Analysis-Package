@@ -9,8 +9,8 @@ MAXFRAMESPERFILE = 1000; %This is set in the miniscope control software
 aviFiles = dir([folderpath '\*.avi']);
 csvFiles = dir([folderpath '\*.csv']);
 
-aviFilesbehav = dir([folderpath '\..\BehavCam_0\*.avi']);
-csvFilesbehav = dir([folderpath '\..\BehavCam_0\*.csv']);
+aviFilesbehav = dir([folderpath '\..\BehavCam*\*.avi']);
+csvFilesbehav = dir([folderpath '\..\BehavCam*\*.csv']);
 
 filePrefix = '';
 %Prefix_TUNL = 'CI28759-3_TUNL_J20_CA1_TUNL Mouse Exp 1 Stage 1 S3TTL_D4sec_232.csv';
