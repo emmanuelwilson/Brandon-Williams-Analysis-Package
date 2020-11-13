@@ -21,7 +21,7 @@ try
     mat_file = mat_data.Properties.Source;
     
     % dimension of data
-    dims = mat_data.dims;
+    dims = round(mat_data.dims);
     d1 = dims(1);
     d2 = dims(2);
     T = dims(3);
@@ -69,7 +69,8 @@ try
     
     % manually check whether to re-use the previous results
     if ~exist('use_prev', 'var') || isempty(use_prev)
-        use_prev = true; 
+%         use_prev = true; % ORIGINAL  
+        use_prev = false;
     end
     if (k > 0) & use_prev
         fprintf('\nYou have ran %d initialization(s). \n', k);
@@ -279,6 +280,7 @@ obj.W = W;
 obj.b0 = b0;
 obj.b = b;
 obj.f = f;
+obj.frame_range = round(obj.frame_range);
 clear W b0 b f;    % remove these variables for saving RAM space
 
 %% start initialization

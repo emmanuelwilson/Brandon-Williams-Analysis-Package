@@ -326,7 +326,8 @@ classdef Sources2D < handle
         %% estimate noise
         function sn = estimate_noise(obj, frame_range, method)
             mat_data = obj.P.mat_data;
-            dims = mat_data.dims;
+            format long
+            dims = round(mat_data.dims);
             T = dims(3);
             if ~exist('frame_range', 'var') || isempty(frame_range)
                 frame_range = [1, min(T, 3000)];
