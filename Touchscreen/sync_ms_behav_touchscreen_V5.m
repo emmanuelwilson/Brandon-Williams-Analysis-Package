@@ -20,15 +20,25 @@ numFramesbehav = 0;       %Number of frames within said videos
 
 %find the total number of relevant video files
 for i=1:length(aviFiles)    
-    vidObj{i} = VideoReader([aviFiles(i).folder '\' aviFiles(i).name]);                     %Read .avi video file
-    numFrames = numFrames + vidObj{i}.NumberOfFrames;      %Total number of frames
+    try
+        vidObj{i} = VideoReader([aviFiles(i).folder '\' aviFiles(i).name]);                     %Read .avi video file
+        numFrames = numFrames + vidObj{i}.NumberOfFrames;      %Total number of frames
+    catch
+        fprintf(['Calcium Video ' aviFiles(i).name ' is Invalid'])
+        stop
+    end
 end
 vidObj = [];
 
 %find the total number of relevant Behav video files
 for i=1:length(aviFilesbehav)    
+    try
     vidObj{i} = VideoReader([aviFilesbehav(i).folder '\' aviFilesbehav(i).name]);                     %Read .avi video file
     numFramesbehav = numFramesbehav + vidObj{i}.NumberOfFrames;      %Total number of frames
+    catch
+        fprintf(['Behaviour Video ' aviFilesbehav(i).name ' is Invalid'])
+        stop
+    end
 end
 
 %read timestamp information
@@ -74,10 +84,10 @@ for i=1:length(csvFilesbehav)
 end
 
 i = 1;
-Tschedule = readcell([folderpath '\' csvFiles(i).name]);
+Tschedule = readtable([folderpath '\' csvFiles(i).name]);
 s = size(Tschedule);
 while s(2) ~= 17    
-    if i > length(csvFiles)
+    if i > length(csvFiles) || s(2) == 17
         break;
     else
         i = i +1;
@@ -86,7 +96,7 @@ while s(2) ~= 17
     end        
 end
 
-Tschedule(1:16,:) = [];
+% Tschedule(1:16,:) = [];
 Evnt_Time = Tschedule(:, 1); %time is in: ___
 Evnt_Name = Tschedule(:, 3);
 Item_Name = Tschedule(:, 4);
@@ -105,12 +115,12 @@ arg = eventname;
 
 %convert cell arrays into arrays
 for t = 1 : length(eventTime)                                               
-    eventTime(t) = Evnt_Time{t};
-    eventname(t) = Evnt_Name{t};
-    item_name(t) = Item_Name{t};
-    aliasname(t) = Alias_Name{t};
-    groupID(t) = Group_ID{t};
-    arg(t) = Arg1{t};    
+    eventTime(t) = Evnt_Time{t,1};
+    eventname(t) = Evnt_Name{t,1};
+    item_name(t) = Item_Name{t,1};
+    aliasname(t) = Alias_Name{t,1};
+    groupID(t) = Group_ID{t,1};
+    arg(t) = Arg1{t,1};    
 end
 
 frameMap = [];
