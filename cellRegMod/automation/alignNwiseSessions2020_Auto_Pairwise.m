@@ -1,6 +1,6 @@
 %% Modified cellReg script, combination of Alex's and Emmmanuel's
 
-function alignNwiseSessions2020_Auto_Pairwise(SFPsShifted,sessions,combs,path,nonRigid)
+function alignNwiseSessions2020_Auto_Pairwise(SFPsShifted,combs,path,nonRigid)
 nFold = 2;
 oldcd = pwd;
 cd(path);
