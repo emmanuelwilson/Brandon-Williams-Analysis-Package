@@ -242,7 +242,7 @@ end
 %% save the workspace for future analysis
 neuron.orderROIs('snr');
 %cnmfe_path = neuron.save_workspace();
-save('neuron','neuron');
+% save('neuron','neuron');
 %% show neuron contours
 ms.Options = neuron.options;
 ms.Centroids = center;
