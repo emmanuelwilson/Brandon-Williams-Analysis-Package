@@ -8,7 +8,7 @@
 %   vertical shift.
 %   -Wil overwrite miniscope structure 
 
-function [wShift,hShift,shifts,nonRigid,combs] = Automation_LandmarkShift2020_Pairwise(folderpath)
+function [wShift,hShift,sessions,nonRigid,combs] = Automation_LandmarkShift2020_Pairwise(folderpath)
 
 prompt = 'Non-Rigid Registration?:Y/N ';
 str = input(prompt,'s');
@@ -18,7 +18,7 @@ else
     nonRigid = false;
 end
 
-folder = dir(folderpath);                                                   %List folder contents
+folder = dir([folderpath '/ms*.mat']);                                                   %List folder contents
 sessions = {folder.name};                                            %Seperate folder contents
 nFold = 2;
 %make sure that the sessions to be analyzed are not in the these folders
@@ -88,12 +88,12 @@ end
 combs = nchoosek(1:length(sessions),nFold);
 
 [wShift,hShift] = msAlignBetweenSessions2020(sessions,combs);
-shifts = cell(length(combs));
-for i = 1 : length(combs)
-    s = sessions{combs(i,2)};
-    ms = SFPshift(s,[wShift(combs(i,1),combs(i,2)),hShift(combs(i,1),combs(i,2))]);    
-    shifts{i} = ms.SFPs;
-end
-save([folderpath,'/'],'shifts')
+% shifts = cell(length(combs));
+% for i = 1 : length(combs)
+%     s = sessions{combs(i,2)};
+%     ms = SFPshift(s,[wShift(combs(i,1),combs(i,2)),hShift(combs(i,1),combs(i,2))]);    
+%     shifts{i} = ms.SFPs;
+% end
+% save([folderpath,'/'],'shifts')
 
 end

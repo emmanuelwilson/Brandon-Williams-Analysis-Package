@@ -10,7 +10,7 @@ dir(pwd);
 folder = dir(folderpath);
 
 %Find FOV shift between neighboring sessions
-[wShift,hShift,sessions,FOVshifted,nonRigid,combs] = Automation_LandmarkShift2020(folderpath);
+[wShift,hShift,sessions,nonRigid,combs] = Automation_LandmarkShift2020_Pairwise(folderpath);
 
 %Align sessions using CellReg
-alignNwiseSessions2020_Auto(FOVshifted,sessions,combs,folderpath,nonRigid)
+alignNwiseSessions2020_Auto_Pairwise(wShift,hShift,sessions,combs,folderpath,nonRigid)

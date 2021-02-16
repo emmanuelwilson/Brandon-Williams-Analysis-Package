@@ -13,12 +13,16 @@ nmap = [];
 %look through all cells
 for i = 1 : length(map)-1
     for j = i+1 : length(map)
-        if j == i +1 && i == 1
+        if (j == i +1 && i == 1)
             nmap = map{i,j};
+        elseif isempty(map{i,j})
+            addon = zeros(1,length(nmap(1,:)));            
+            temp = cat(1,nmap,addon);
+            nmap = temp;
         else
             %add cell combinations
             for k = 1 : length(map{i,j}(:,1))
-                if all(map{i,j}(k,:)~=0)
+                if all(map{i,j}(k,:)~=0) 
                     nmap(find(nmap(:,i)== map{i,j}(k,1)),j) = map{i,j}(k,2);
                 elseif map{i,j}(k,1) == 0
                     addon = zeros(1,length(nmap(1,:)));

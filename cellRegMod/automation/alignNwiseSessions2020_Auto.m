@@ -151,6 +151,9 @@ cormat = diag(max(max(combs)));
         if ~nonRigid
             cormat_foot = corval_foot;
         end
+        if isempty(probtemp)
+            prob{si} = 0;
+        end
         probtemp = [];
         try
             rmdir([path, '\tempfigs' ],'s');

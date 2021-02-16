@@ -1,6 +1,6 @@
 %% Modified cellReg script, combination of Alex's and Emmmanuel's
 
-function alignNwiseSessions2020_Auto_Pairwise(SFPsShifted,combs,path,nonRigid)
+function alignNwiseSessions2020_Auto_Pairwise(wshift,hshift,sessions,combs,path,nonRigid)
 nFold = 2;
 oldcd = pwd;
 cd(path);
@@ -17,7 +17,7 @@ for i = length(paths):-1:1
     end
 end
 
-iters = 10;
+iters = 5;
 
 warning ('off','all');
 
@@ -36,10 +36,12 @@ cormat = diag(max(max(combs)));
         if si == 17
         end
 %         fprintf(['\t\tSession:  ' sessions{combs(si,1)}(find(ismember(sessions{combs(si,1)},'/'),1,'last')+1:end) '\n'])
-        load(['ms' num2str(combs(si,1)) '.mat'])
-        ref = ms;
+        ref = sessions{combs(si,1)};        
+        ms = sessions{combs(si,2)};
+        move = SFPshift(ms,[wshift(combs(si,2)),hshift(combs(si,2))]);
+        move = move.SFPs;
         preppedr = ref.SFPs .* bsxfun(@gt,ref.SFPs,0.5.*nanmax(nanmax(ref.SFPs,[],1),[],2));
-        move = SFPsShifted{si};%,'calcium','processed');        
+%         move = SFPsShifted{si};%,'calcium','processed');        
         preppedm = move.* bsxfun(@gt,move,0.5.*nanmax(nanmax(move,[],1),[],2));
         [cellmapr,excluder] = msExtractSFPsCellReg2020(preppedr);
         [cellmapm,excludem] = msExtractSFPsCellReg2020(preppedm);
@@ -76,53 +78,72 @@ cormat = diag(max(max(combs)));
             outP = [path '\Segments\ms' num2str(combs(si,1))];% num2str(find(si == combs(i,:)))];
             checkP(outP)
             save(outP,'preppedr');
+            out1 = outP;
         else
             preppedr = permute(ref.SFPs,[3 1 2]);
             preppedr = preppedr(outofFOVr.exclude_all{si},:,:);
             outP = [path '\Segments\ms0' num2str(combs(si,1))];% num2str(find(si == combs(i,:)))];
             checkP(outP)
             save(outP,'preppedr');
+            out1 = outP;
         end
         if combs(si,2) > 9            
             preppedm = allPrepped;
             outP = [path '\Segments\ms' num2str(combs(si,2))];% num2str(find(si == combs(i,:)))];
             checkP(outP)
             save(outP,'preppedm');
+            out2 = outP;
         else
             preppedm = allPrepped;
             outP = [path '\Segments\ms0' num2str(combs(si,2))];% num2str(find(si == combs(i,:)))];
             checkP(outP)
             save(outP,'preppedm');
+            out2 = outP;
         end
         
         mkdir(path,'tempfigs')
+        badreg = [];
         parfor iteration = 1:iters
-%             try
-            if nonRigid
-                [itter_map, regStruct] = registerCellsNoGUI2020_Auto([path '\Segments' ]);
-            else
-                [itter_map, regStruct] = registerCells2020_Auto([path '\Segments' ]);
+            mkdir([path '/tempfigs'], num2str(iteration))
+            copyfile([out1 '.mat'], [path '/tempfigs/' num2str(iteration)]);
+            copyfile([out2 '.mat'], [path '/tempfigs/' num2str(iteration)]);
+            try
+                if nonRigid
+                    [itter_map, regStruct] = registerCellsNoGUI2020_Auto([path '/tempfigs/' num2str(iteration)]);
+                else
+                    [itter_map, regStruct] = registerCells2020_Auto([path '/tempfigs/' num2str(iteration)]);
+                end
+            catch
+                itter_map = [];
+                regStruct = [];
+                badreg = [badreg iteration];
             end
-%             catch            
-%                 itter_map = [];
-%                 regStruct = [];
-%             end
             itermap{iteration} = itter_map;
             iterstruct{iteration} = regStruct;
             close all
             close all hidden
             drawnow
-            copyfile([path,'\Segments\Plots\CellRegistration\Figures'],[path,'\tempfigs\',num2str(iteration)]);
+            try
+                copyfile([path,'\Segments\Plots\CellRegistration\Figures'],[path,'\tempfigs\',num2str(iteration)]);
+            end
         end
+        badreg = sort(badreg,'descend');
+        itermap(badreg) = [];
+        iterstruct(badreg) = [];
         try
             rmdir([path, '\Segments' ],'s');
         end        
         iterstruct = iterstruct(~cellfun(@isempty,itermap));
         itermap = itermap(~cellfun(@isempty,itermap));
         itterind = find(~cellfun(@isempty,itermap));
-        
-        [a, b] = nanmin(cellfun(@length,itermap));
+        if isempty(itterind)
+            b = [];
+        else
+            [a, b] = nanmin(cellfun(@length,itermap));
+        end
         %             [a b] = nanmax(scores);
+        corval = NaN;
+        map = [];
         if ~isempty(b)
             while isempty(itermap{b})
                 itermap(b) = [];
@@ -139,7 +160,7 @@ cormat = diag(max(max(combs)));
             for s = 1 : length(iterstruct{b}.p_same_registered_pairs)
                 probtemp(s,:) = nanmean(iterstruct{b}.p_same_registered_pairs{s});
             end
-            copyfile([path,'\tempfigs\',num2str((itterind(b)))],[path,'\Results\',num2str(combs(si,1)),'_',num2str(combs(si,2))]);
+            copyfile([path,'\tempfigs\',num2str((itterind(b))) '\Plots\CellRegistration\Figures'],[path,'\Results\',num2str(combs(si,1)),'_',num2str(combs(si,2))]);
             %                 corval = iterstruct{b}.maximal_cross_correlation;
         else 
             nothing = 0;
@@ -181,8 +202,11 @@ cormat = diag(max(max(combs)));
         alignmentMap(si) = nm;
         try
             probMap(si) = nmp;
-        end
-        scoreMap(si,1) = nmp;
+            scoreMap(si,1) = nmp;
+        catch
+            probMap{si} = NaN;
+            scoreMap{si,1} = NaN;
+        end        
         CorrMap_cent(si,1) = nmc_cent;
         if ~nonRigid
             CorrMap_foot(si,1) = nmc_foot;
@@ -191,17 +215,20 @@ cormat = diag(max(max(combs)));
     
     alignmentMap = updateAlignment(alignmentMap,outofFOVm,combs);
     
-    alignmentMap = alignmentMap;    
+    alignment.alignmentMap = alignmentMap;    
     combs = combs;   
     nFold = nFold;
-    probMap = probMap;
-    scoreMap = scoreMap;
+%     probMap = probMap;
+%     scoreMap = scoreMap;
     if ~nonRigid
         alignment.CorrMap_footprints = CorrMap_foot;
         alignment.CorrMap_centroid = CorrMap_cent;
     else
         alignment.CorrMap = CorrMap_cent;
     end
+    Singlemap = ReorganizeAlignmentMap(alignment.alignmentMap);
+    [Singlemap, avg_psame] = ElimConflict2020_Pairwise(Singlemap,alignment.alignmentMap,scoreMap,combs);
+    Singlemap = FindMissingCells2020_Auto(Singlemap,outofFOVm,alignment.alignmentMap,combs);
     %         save('temporaryAlignmentMap','alignmentMap')
     save('alignment','alignment','combs','nFold','probMap','scoreMap','-v7.3');
 % end
