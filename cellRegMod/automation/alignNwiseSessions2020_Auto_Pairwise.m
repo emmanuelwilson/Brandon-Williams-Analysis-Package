@@ -207,9 +207,9 @@ cormat = diag(max(max(combs)));
             probMap{si} = NaN;
             scoreMap{si,1} = NaN;
         end        
-        CorrMap_cent(si,1) = nmc_cent;
+        CorrMap_cent(combs(si,1),combs(si,2)) = nmc_cent;
         if ~nonRigid
-            CorrMap_foot(si,1) = nmc_foot;
+            CorrMap_foot(combs(si,1),combs(si,2)) = nmc_foot;
         end
     end
     
@@ -230,6 +230,6 @@ cormat = diag(max(max(combs)));
     [Singlemap, avg_psame] = ElimConflict2020_Pairwise(Singlemap,alignment.alignmentMap,scoreMap,combs);
     Singlemap = FindMissingCells2020_Auto(Singlemap,outofFOVm,alignment.alignmentMap,combs);
     %         save('temporaryAlignmentMap','alignmentMap')
-    save('alignment','alignment','combs','nFold','probMap','scoreMap','-v7.3');
+    save('alignment','alignment','combs','nFold','probMap','scoreMap','Singlemap','-v7.3');
 % end
 end
