@@ -19,8 +19,9 @@ clear
 
 
 % find avi and dat files
-aviFiles = dir([pwd filesep 'behavCam*.avi']);
-filePrefix = 'behavCam';
+filePrefix = '';
+aviFiles = dir([pwd filesep filePrefix '*.avi']);
+
 
 totalFrames = 0;        %Total number of frames observed (including previous video itterations)
 TimestampMin = 10000000;%Arbitrary VERY large number for min value storage, must be larger than datenum stamp in folder
@@ -29,6 +30,9 @@ o = NaN(1,length(aviFiles)); %index movie order
 
 %Find total number of frames and organize vidoes by their timestamps 
 for ind_vid = 1: length(aviFiles)                         %Going through every object in the folder
+    if isempty(filePrefix)
+        filePrefix = num2str(ind_vid-1);
+    end
     if (~isempty(strfind(aviFiles(ind_vid).name,filePrefix)))
         movieFullFileName =  aviFiles(ind_vid).name;      %Movie file name
         video = VideoReader(movieFullFileName);   %Read video file              
@@ -51,11 +55,11 @@ REDco = NaN(totalFrames, 5);       %Red Centroid coordinate storage Each instanc
 HDdeg = zeros(totalFrames, 1);     %Head direction/orientation storage
 SINKdata = HEADco;                 %Head coordinates used for sinking with the miniscope
 tempHDdeg = zeros(totalFrames, 1); % temporary Head direction/orientation storage
-redThresh = 0.1;          % Must be a value between 1 and 0. The lower the number the more sensitve it is
+redThresh = 0.04;          % Must be a value between 1 and 0. The lower the number the more sensitve it is
 ExtentLim = 0.1;            %Extent limit : ratio of bounding box area to full area
 EccLim = 0.9;               %Eccentricity limit: roundness factor, 1=line, 0=circle
 LEDxDist = 20;              %Max distance between LED's in the x axis in pixels
-LEDyDist = 15;              %Max distance between LED's in the y axis in pixels
+LEDyDist = 20;              %Max distance between LED's in the y axis in pixels
 frame  = 1;                 %Frame # of current video
 CurrentFrame = frame;
 Mask = [];
