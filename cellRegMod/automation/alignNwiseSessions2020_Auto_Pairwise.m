@@ -33,8 +33,6 @@ cormat = diag(max(max(combs)));
     
 %     allPrepped  = cell(length(combs(:,1)));%= repmat({[]},[1 length(sessions)]);
     for si = 1:length(combs(:,1))
-        if si == 17
-        end
 %         fprintf(['\t\tSession:  ' sessions{combs(si,1)}(find(ismember(sessions{combs(si,1)},'/'),1,'last')+1:end) '\n'])
         ref = sessions{combs(si,1)};        
         ms = sessions{combs(si,2)};
@@ -212,8 +210,12 @@ cormat = diag(max(max(combs)));
             CorrMap_foot(combs(si,1),combs(si,2)) = nmc_foot;
         end
     end
+    CorrMap_cent(end+1,:) = 0;
+    if ~nonRigid
+        CorrMap_foot(end+1,:) = 0;
+    end
     
-    alignmentMap = updateAlignment(alignmentMap,outofFOVm,combs);
+    alignmentMap = updateAlignment(alignmentMap,outofFOVm,outofFOVr,combs);
     
     alignment.alignmentMap = alignmentMap;    
     combs = combs;   
@@ -226,10 +228,14 @@ cormat = diag(max(max(combs)));
     else
         alignment.CorrMap = CorrMap_cent;
     end
+    Session_Info = cell(length(sessions),1);
+    for i = 1 : length(sessions)
+        Sessions_Info{i} = sessions{i}.dirName;
+    end
     Singlemap = ReorganizeAlignmentMap(alignment.alignmentMap);
     [Singlemap, avg_psame] = ElimConflict2020_Pairwise(Singlemap,alignment.alignmentMap,scoreMap,combs);
-    Singlemap = FindMissingCells2020_Auto(Singlemap,outofFOVm,alignment.alignmentMap,combs);
+    Singlemap = FindMissingCells2020_Auto(Singlemap,sessions);
     %         save('temporaryAlignmentMap','alignmentMap')
-    save('alignment','alignment','combs','nFold','probMap','scoreMap','Singlemap','-v7.3');
+    save('alignment','alignment','combs','nFold','probMap','scoreMap','Singlemap','Sessions_Info','-v7.3');
 % end
 end
