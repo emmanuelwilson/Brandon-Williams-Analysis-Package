@@ -85,14 +85,14 @@ for i=1:length(csvFilesbehav)
 end
 
 i = 1;
-Tschedule = readtable([folderpath '\' csvSchedule(i).name]);
+Tschedule = readtable([folderpath '\..\' csvSchedule(i).name]);
 s = size(Tschedule);
 while s(2) ~= 17    
     if i > length(csvSchedule) || s(2) == 17
         break;
     else
         i = i +1;
-        Tschedule = readcell([folderpath '\' csvSchedule(i).name]);
+        Tschedule = readcell([folderpath '\..\' csvSchedule(i).name]);
         s = size(Tschedule);
     end        
 end
