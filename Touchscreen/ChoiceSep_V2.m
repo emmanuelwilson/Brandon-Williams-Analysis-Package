@@ -47,7 +47,7 @@ for i = 1 : length(cchoice)
     if length(cind)>= cc && (cchoice(i)>= cind(cc)) && (cchoice(i)<cind(cc)+cl(cc))
         cpress(i) = str2num(events(cchoice(i),4));
         cc = cc +1;
-    elseif ~isempty(ccind) &&(cchoice(i)>= ccind(ccc)) && (cchoice(i)<ccind(ccc)+ccl(ccc))
+    elseif ~isempty(ccind) && length(ccind)>= ccc &&(cchoice(i)>= ccind(ccc)) && (cchoice(i)<ccind(ccc)+ccl(ccc))
         ccpress(i) = str2num(events(cchoice(i),4));
         ccc = ccc + 1;
     else
