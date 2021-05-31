@@ -24,11 +24,12 @@ degBins = degBins';                                     %reorient bins
 degBins = deg2rad(degBins);                             %Convert to radians
 mrall = zeros(1,length(normNeuC(1,:)));             %Firing frequency for each cell;
 distanceBins = 0:DistBinSize:FOVsize;
-fps = 30;                                               %Frames per second
+fps = 5;                                               %Frames per second
 spf = 1/fps;                                            %Seconds per frame
 minDist = [1:2];
 cutoff = 0;
 timevar = [];
+minute_frames = 60*fps;
 
 set(groot, 'defaultFigureUnits','normalized');
 set(groot, 'defaultFigurePosition',[0 0 1 1]);
@@ -47,7 +48,7 @@ parfor itteration = 1 : 100
     %Loop through every cell, extract and analize firing instances and boundary locations
     for cellNum = 1 : length(firing(1,:))           
         fire = shuffledFiring(:,cellNum);          
-        mins = length(fire)/1800;
+        mins = length(fire)/minute_frames;
         if mins <= round(mins)
             mins = round(mins);
         else
@@ -56,21 +57,21 @@ parfor itteration = 1 : 100
         for i = 1 : mins
             if mod(i,2) == 0
                 if i == 2 && i == mins
-                    fire2 = fire((1800*(i-1)+1:end),1);
-                    iTime2 = (1800*(i-1)+1:length(fire));
-                    dis2 = dis((1800*(i-1)+1:end),:);
+                    fire2 = fire((minute_frames*(i-1)+1:end),1);
+                    iTime2 = (minute_frames*(i-1)+1:length(fire));
+                    dis2 = dis((minute_frames*(i-1)+1:end),:);
                 elseif i ==2
-                    fire2 = fire((1800*(i-1)+1:1800*i),1);
-                    iTime2 = (1800*(i-1)+1:1800*i);
-                    dis2 = dis((1800*(i-1)+1:1800*i),:);
+                    fire2 = fire((minute_frames*(i-1)+1:minute_frames*i),1);
+                    iTime2 = (minute_frames*(i-1)+1:minute_frames*i);
+                    dis2 = dis((minute_frames*(i-1)+1:minute_frames*i),:);
                 elseif i < mins
-                    fire2(end+1:end + 1800) = fire(1800*(i-1)+1:1800*i,1);
-                    iTime2(end+1:end + 1800) =(1800*(i-1)+1:1800*i);
-                    dis2(end+1:end + 1800,:) = dis(1800*(i-1)+1:1800*i,:);
+                    fire2(end+1:end + minute_frames) = fire(minute_frames*(i-1)+1:minute_frames*i,1);
+                    iTime2(end+1:end + minute_frames) =(minute_frames*(i-1)+1:minute_frames*i);
+                    dis2(end+1:end + minute_frames,:) = dis(minute_frames*(i-1)+1:minute_frames*i,:);
                 else
-                    fire2(end+1:end+(length(fire)-((mins-1)*1800))) = fire((1800*(i-1)+1:end),1);
-                    iTime2(end+1:end+(length(fire)-((mins-1)*1800))) = (1800*(i-1)+1:length(fire));
-                    dis2(end+1:end+(length(fire)-((mins-1)*1800)),:) = dis((1800*(i-1)+1:end),:);
+                    fire2(end+1:end+(length(fire)-((mins-1)*minute_frames))) = fire((minute_frames*(i-1)+1:end),1);
+                    iTime2(end+1:end+(length(fire)-((mins-1)*minute_frames))) = (minute_frames*(i-1)+1:length(fire));
+                    dis2(end+1:end+(length(fire)-((mins-1)*minute_frames)),:) = dis((minute_frames*(i-1)+1:end),:);
                 end
             else
                 if i == 1 && i == mins
@@ -78,17 +79,17 @@ parfor itteration = 1 : 100
                     iTime1 = (1:length(fire));
                     dis1 = dis(1:end,:);
                 elseif i == 1
-                    fire1 = fire(1:1800*i,1);
-                    iTime1 = (1:1800*i);
-                    dis1 = dis(1:1800,:);
+                    fire1 = fire(1:minute_frames*i,1);
+                    iTime1 = (1:minute_frames*i);
+                    dis1 = dis(1:minute_frames,:);
                 elseif i < mins
-                    fire1(end+1:end+1800) = fire(((1800*i)-1799:1800*i),1);
-                    iTime1(end+1:end+1800)= ((1800*i)-1799:1800*i);
-                    dis1(end+1:end+1800,:) = dis((1800*i)-1799:1800*i,:);
+                    fire1(end+1:end+minute_frames) = fire(((minute_frames*i)-(minute_frames-1):minute_frames*i),1);
+                    iTime1(end+1:end+minute_frames)= ((minute_frames*i)-(minute_frames-1):minute_frames*i);
+                    dis1(end+1:end+minute_frames,:) = dis((minute_frames*i)-(minute_frames-1):minute_frames*i,:);
                 else
-                    fire1(end+1:end+(length(fire)-(mins-1)*1800)) = fire(((1800*i)-1799:end),1);
-                    iTime1(end+1:end+(length(fire)-(mins-1)*1800)) = ((1800*i)-1799:length(fire));
-                    dis1(end+1:end+(length(fire)-(mins-1)*1800),:) = dis((1800*i)-1799:length(fire),:);
+                    fire1(end+1:end+(length(fire)-(mins-1)*minute_frames)) = fire(((minute_frames*i)-(minute_frames-1):end),1);
+                    iTime1(end+1:end+(length(fire)-(mins-1)*minute_frames)) = ((minute_frames*i)-(minute_frames-1):length(fire));
+                    dis1(end+1:end+(length(fire)-(mins-1)*minute_frames),:) = dis((minute_frames*i)-(minute_frames-1):length(fire),:);
                 end
             end
         end
