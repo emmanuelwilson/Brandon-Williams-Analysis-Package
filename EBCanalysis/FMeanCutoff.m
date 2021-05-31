@@ -1,7 +1,7 @@
-scatmatSubtot = scat8;
-endstep = 0.013;
-stepSize = 0.0005;
-fstep = 0.0013;
+scatmatSubtot = scat;
+endstep = .61;
+stepSize = 0.005;
+fstep = 0.025;
 xbin = [fstep:stepSize:endstep];
 
 vals = nan(length(xbin)-1,2);
@@ -14,9 +14,9 @@ for i = 1:length(xbin)-1
     vals(i,2) = nanstd(scatmatSubtot(scatmatSubtot(:,2)>xbin(i) & scatmatSubtot(:,2) < xbin(i+1),1));
 end
 
-maxMF = 0.015;  %Max Mean Firing (active frames/total frames)  %0.0905
+maxMF = endstep;  %Max Mean Firing (active frames/total frames)  %0.0905
 minMF = 0.0;
-stepSize = 0.00001;
+stepSize = 0.001;
 xbin2 = [fstep:stepSize:endstep];
 longvals = spline(xbin(1:end-1),vals(:,1),xbin2);
 %Get rid of values that are interpolated past the max value (will vary)

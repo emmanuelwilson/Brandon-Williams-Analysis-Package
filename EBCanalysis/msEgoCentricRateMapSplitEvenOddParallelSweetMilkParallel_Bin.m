@@ -23,7 +23,7 @@ function [out]= msEgoCentricRateMapSplitEvenOddParallelSweetMilkParallel_Bin(ms,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Author Emmanuel Wilson
 
-name = 'EBCevenOddSplitParallelDeconvolved_Donut3SWEETMILK_D1d2A6_TEST_fix.mat';
+name = 'EBCevenOddSplitParallelDeconvolved_Donut3SWEETMILK_D1A3_rightOb_no1cm';
 
 %Set Analysis Distance 
 if dimX > dimY
@@ -53,7 +53,7 @@ distanceBins = 0:DistBinSize:FOVsize;                                           
 fps = 30;                                                                   %Frames per second
 spf = 1/fps;                                                                %Seconds per frame
 ms.timestamp = frameMap.*spf;                                               %time stamp in seconds
-minDist = [1:2];                                                            %minimum distance ignored
+minDist = [1];                                                            %minimum distance ignored
 
 %% FrameMap special case correction
 %IF SPECIAL CASE APPEARS MAKE SURE TO CHECK framemap, ms AND SINKdata ARE
@@ -454,7 +454,7 @@ for cellNum = 1 : length(ms.FiltTraces(1,:))
             corrparW = corr2(rm1W,rm2W);
             
             %% EBC METRIC
-            figure;
+%             figure;
             figure('Position', get(0, 'Screensize'));  
 %             figure('visible','off');
             n=3;

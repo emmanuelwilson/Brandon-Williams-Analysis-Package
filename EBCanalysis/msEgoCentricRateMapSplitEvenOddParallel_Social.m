@@ -31,11 +31,12 @@ mkdir(name)                          %Create new folder within current directory
 counter = 0 ;                                           %counter
 counter1 = 0;
 counter2 = 0;
-fps = 30;                                               %Frames per second
+fps = 5;                                               %Frames per second
 spf = 1/fps;                                            %Seconds per frame
 minDist = [1:2];
 cutoff = 0;
 timevar = [];
+minutes_frames = 300;
 
 
 set(groot, 'defaultFigureUnits','normalized');
@@ -56,7 +57,7 @@ for ctrack = 1 : length(cellIndex)
     end
     fire = firing;                                  %Duplicate
     fire = fire - min(fire);
-    mins = length(fire)/1800;
+    mins = length(fire)/minutes_frames;
     if mins <= round(mins)
         mins = round(mins);        
     else
@@ -65,21 +66,21 @@ for ctrack = 1 : length(cellIndex)
     for i = 1 : mins
         if mod(i,2) == 0
             if i == 2 && i == mins
-                fire2 = fire((1800*(i-1)+1:end),1);
-                iTime2 = (1800*(i-1)+1:length(fire));
-                dis2 = dis((1800*(i-1)+1:end),:);
+                fire2 = fire((minutes_frames*(i-1)+1:end),1);
+                iTime2 = (minutes_frames*(i-1)+1:length(fire));
+                dis2 = dis((minutes_frames*(i-1)+1:end),:);
             elseif i ==2
-                fire2 = fire((1800*(i-1)+1:1800*i),1);
-                iTime2 = (1800*(i-1)+1:1800*i);
-                dis2 = dis((1800*(i-1)+1:1800*i),:);
+                fire2 = fire((minutes_frames*(i-1)+1:minutes_frames*i),1);
+                iTime2 = (minutes_frames*(i-1)+1:minutes_frames*i);
+                dis2 = dis((minutes_frames*(i-1)+1:minutes_frames*i),:);
             elseif i < mins
-                fire2(end+1:end + 1800) = fire(1800*(i-1)+1:1800*i,1);
-                iTime2(end+1:end + 1800) =(1800*(i-1)+1:1800*i);
-                dis2(end+1:end + 1800,:) = dis(1800*(i-1)+1:1800*i,:);
+                fire2(end+1:end + minutes_frames) = fire(minutes_frames*(i-1)+1:minutes_frames*i,1);
+                iTime2(end+1:end + minutes_frames) =(minutes_frames*(i-1)+1:minutes_frames*i);
+                dis2(end+1:end + minutes_frames,:) = dis(minutes_frames*(i-1)+1:minutes_frames*i,:);
             else
-                fire2(end+1:end+(length(fire)-((mins-1)*1800))) = fire((1800*(i-1)+1:end),1);
-                iTime2(end+1:end+(length(fire)-((mins-1)*1800))) = (1800*(i-1)+1:length(fire));
-                dis2(end+1:end+(length(fire)-((mins-1)*1800)),:) = dis((1800*(i-1)+1:end),:);
+                fire2(end+1:end+(length(fire)-((mins-1)*minutes_frames))) = fire((minutes_frames*(i-1)+1:end),1);
+                iTime2(end+1:end+(length(fire)-((mins-1)*minutes_frames))) = (minutes_frames*(i-1)+1:length(fire));
+                dis2(end+1:end+(length(fire)-((mins-1)*minutes_frames)),:) = dis((minutes_frames*(i-1)+1:end),:);
             end
         else
             if i == 1 && i == mins                
@@ -87,17 +88,17 @@ for ctrack = 1 : length(cellIndex)
                 iTime1 = (1:length(fire));
                 dis1 = dis(1:end,:);
             elseif i == 1
-                fire1 = fire(1:1800*i,1);
-                iTime1 = (1:1800*i);
-                dis1 = dis(1:1800,:);
+                fire1 = fire(1:minutes_frames*i,1);
+                iTime1 = (1:minutes_frames*i);
+                dis1 = dis(1:minutes_frames,:);
             elseif i < mins
-                fire1(end+1:end+1800) = fire(((1800*i)-1799:1800*i),1);
-                iTime1(end+1:end+1800)= ((1800*i)-1799:1800*i);
-                dis1(end+1:end+1800,:) = dis((1800*i)-1799:1800*i,:);
+                fire1(end+1:end+minutes_frames) = fire(((minutes_frames*i)-(minutes_frames-1):minutes_frames*i),1);
+                iTime1(end+1:end+minutes_frames)= ((minutes_frames*i)-(minutes_frames-1):minutes_frames*i);
+                dis1(end+1:end+minutes_frames,:) = dis((minutes_frames*i)-(minutes_frames-1):minutes_frames*i,:);
             else
-                fire1(end+1:end+(length(fire)-(mins-1)*1800)) = fire(((1800*i)-1799:end),1);
-                iTime1(end+1:end+(length(fire)-(mins-1)*1800)) = ((1800*i)-1799:length(fire));
-                dis1(end+1:end+(length(fire)-(mins-1)*1800),:) = dis((1800*i)-1799:length(fire),:);
+                fire1(end+1:end+(length(fire)-(mins-1)*minutes_frames)) = fire(((minutes_frames*i)-(minutes_frames-1):end),1);
+                iTime1(end+1:end+(length(fire)-(mins-1)*minutes_frames)) = ((minutes_frames*i)-(minutes_frames-1):length(fire));
+                dis1(end+1:end+(length(fire)-(mins-1)*minutes_frames),:) = dis((minutes_frames*i)-(minutes_frames-1):length(fire),:);
             end
         end
     end
@@ -275,10 +276,11 @@ for ctrack = 1 : length(cellIndex)
             %Figure 7 is part of our work in progress for estimating a cell’s preferred distance.
             %Finally, figure 8 is a trajectory plot with heading color coded spike dots
             
-            figure;
-            set(0,'DefaultFigureWindowStyle' , 'normal')
-            figure('Position', get(0, 'Screensize'));  
+%             figure;
+%             set(0,'DefaultFigureWindowStyle' , 'normal')
+%             figure('Position', get(0, 'Screensize'));  
             figure('visible','off');
+            set(0,'DefaultFigureWindowStyle' , 'normal')
             n=3;
             m = 3;
             c = 1;
