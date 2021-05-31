@@ -13,7 +13,7 @@ for i = 1 : length(folders)
     if ~isempty(folders{i})        
         d = dir(folders{i});
         fnames = {d.name};
-        if isempty(find(strcmp(fnames,'ms.mat'),1)) && ~isempty(find(strncmp(fnames,'timestamp',1),1))
+        if isempty(find(strcmp(fnames,'ms.mat'),1)) %&& ~isempty(find(strncmp(fnames,'timestamp',1),1))
             cd(folders{i});                                  %Change current folder
             try
                 msRun2018                                                      %Run analysis
