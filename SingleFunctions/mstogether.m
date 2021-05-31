@@ -1,0 +1,53 @@
+% put all of the ms sub categories into a structure if ms is not a struct
+function [] = mstogether(p)
+
+paths = genpath(p);
+if ispc
+    folders = strsplit(paths,';')';
+else
+    folders = strsplit(paths,':')';
+end
+for i = 1 : length(folders)
+    if ~isempty(folders{i})        
+        d = dir(folders{i});
+        fnames = {d.name};
+        if ~isempty(find(strcmp(fnames,'ms.mat'),1))
+            cd(folders{i});
+            load('ms.mat')
+            if ~exist('ms')                
+                ms.dirName = dirName;
+                ms.numFiles = numFiles;
+                ms.numFrames = numFrames;
+                ms.vidNum = vidNum;
+                ms.frameNum = frameNum;
+                ms.maxFramesPerFile = 1000;
+                ms.vidObj = vidObj;
+                ms.height = height;
+                ms.width = width;
+                ms.Experiment = Experiment;
+                ms.camNumber = camNumber;
+                ms.time = time;
+                ms.maxBufferUsed = maxBufferUsed;
+                ms.analysis_time = analysis_time;
+                ms.ds = ds;
+                ms.shifts = shifts;
+                ms.meanFrame = meanFrame;
+                ms.Options = Options;
+                ms.Centroids = Centroids;
+                ms.CorrProj = CorrProj;
+                ms.PeakToNoiseProj = PeakToNoiseProj;
+                ms.FiltTraces = FiltTraces;
+                ms.RawTraces = RawTraces;
+                ms.SFPs = SFPs;
+                ms.numNeurons = numNeurons;
+                ms.analysis_duration = analysis_duration;
+                ms.denoisedCa = denoisedCa;
+                ms.deconvolvedSig = deconvolvedSig;
+                ms.exclude = exclude;
+                save('ms.mat','ms');                
+            end
+            clear('ms');
+        end
+    end
+end
+end
