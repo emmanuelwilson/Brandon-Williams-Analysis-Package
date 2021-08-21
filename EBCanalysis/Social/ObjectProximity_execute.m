@@ -8,27 +8,37 @@ frameMaptemp(1:t) = [];
 
 try
     load('ObjectStats.mat')
-catch
-    QPW = findEdges(SINKdata(frameMaptemp,:));
-    h = figure;
-    plot(SINKdata(frameMaptemp,1),SINKdata(frameMaptemp,2))
-    [ObjectPos1, ObjectPos2] = getpts(h);
-    ObjectPos = cat(2,ObjectPos1,ObjectPos2);
-    Object1 = ObjectPos(1,:);
-    Object2 = ObjectPos(2,:);
-    close(h);    
-
-    ObjectStats.QPW = QPW;
-    ObjectStats.CentroidOb1 = Object1;
-    ObjectStats.CentroidOb2 = Object2;
-    save('ObjectStats.mat','ObjectStats')
+% % %     vid = VideoReader('behavCam1.avi');
+% % %     f1 = vid.read(1);
+% % %     h = figure;
+% % %     imshow(f1);
+% % %     hold on
+% % % % catch
+% % % %     QPW = findEdges(SINKdata(frameMaptemp,:));    
+% % %     plot(SINKdata(frameMaptemp,1),SINKdata(frameMaptemp,2))
+% % %     scatter(ObjectStats.CentroidOb1(1),ObjectStats.CentroidOb1(2))
+% % %     scatter(ObjectStats.CentroidOb2(1),ObjectStats.CentroidOb2(2))
+% % %     scatter(ObjectStats.QPW(1,1),ObjectStats.QPW(1,2))
+% % %     scatter(ObjectStats.QPW(2,1),ObjectStats.QPW(2,2))
+% % %     scatter(ObjectStats.QPW(3,1),ObjectStats.QPW(3,2))
+% % %     scatter(ObjectStats.QPW(4,1),ObjectStats.QPW(4,2))
+% % %     [ObjectPos1, ObjectPos2] = getpts(h);
+% % %     ObjectPos = cat(2,ObjectPos1,ObjectPos2);
+% % %     Object1 = ObjectPos(1,:);
+% % %     Object2 = ObjectPos(2,:);
+% % %     close(h);    
+% % % 
+% % % %     ObjectStats.QPW = QPW;
+% % %     ObjectStats.CentroidOb1 = Object1;
+% % %     ObjectStats.CentroidOb2 = Object2;
+% % %     save('ObjectStats.mat','ObjectStats')
 end
 
 
 
 ObjectProximity = ObjectProximityFiring(ms,SINKdata,frameMap,ObjectStats, 3, 2, 44,26.5, t);
 save('ObjectProximity.mat','ObjectProximity')
-save('ObjectStats.mat','ObjectStats')
+% save('ObjectStats.mat','ObjectStats')
 
 
 

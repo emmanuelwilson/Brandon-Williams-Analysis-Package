@@ -343,10 +343,10 @@ parfor itteration = 1 : 100
     CORRsave(:,itteration) = corritt;
 end
 
-if find(MRLsave>0.6)
-    beep
-    pause
-end
+% if find(MRLsave>0.6)
+%     beep
+%     pause
+% end
 out.mrall = MRLsave(:);
 out.mrall1 = MRLsave1(:);
 out.mrall2 = MRLsave2(:);

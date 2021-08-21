@@ -8,9 +8,15 @@ else
 end
 
 for i = 1 : length(folders)    
-    try
-        cd(folders{i})
-        SocialProximityFiring_SIT_execute
+    if ~isempty(folders{i})
+        d = dir(folders{i});
+        fnames = {d.name};
+        if ~isempty(find(strncmp(fnames,'frameMap.mat',10),1)) && ~isempty(find(strncmp(fnames,'SITstartFrame.mat',10),1))
+            try
+                cd(folders{i})
+                SocialProximityFiring_SIT_execute
+            end
+        end
     end
 end
 end

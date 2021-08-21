@@ -6,6 +6,15 @@ if ~isempty(badframes)
     ms.deconvolvedSig(1:badframes,:) = [];
 end
 
+fps = 30;
+timeframes = 5*60;
+lframes = timeframes*fps;
+if length(frameMap) > lframes
+    frameMap = frameMap(1:lframes);
+    ms.FiltTraces = ms.FiltTraces(1:lframes,:);
+    ms.deconvolvedSig = ms.deconvolvedSig(1:lframes,:);
+end
+
 maxX = max(ebcstats.QPW(:,1));
 maxY = max(ebcstats.QPW(:,2));
 minX = min(ebcstats.QPW(:,1));
@@ -29,6 +38,8 @@ yv = R*sin(L)';
 object1Occupancy = sum(((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=R^2));
 totalOccupancy = sum(((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=R^2));
 totalFrames = length(frameMap);
+obj1OccFrames = ((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=R^2);
+
 
 for i = 1 : length(ms.FiltTraces(1,:))
     normCal = normalize(ms.FiltTraces(:,i),'range');
@@ -65,4 +76,5 @@ out.TotalFrames = totalFrames;
 out.ObjectRadius = objectsizeRad;
 out.ProximityRadius = ROIrad;
 out.FieldSize = FieldSize;
+out.Object1Occ = obj1OccFrames;
 end

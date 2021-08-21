@@ -2,7 +2,7 @@
 % try
 %     load('SocialProximity_V2.mat')
 % catch
-%     try
+    try
         load('CupStats.mat')
         load('ms.mat');
         load('HeadTrackingData.mat');
@@ -10,51 +10,51 @@
         load('badframes.mat')
         frameMaptemp = frameMap(t:end);       
         
-% %         h = figure(1);
-% %         vid = VideoReader('behavCam1.avi');
-% %         f1 = vid.read(1);
-% %         h = figure;
-% %         imshow(f1);
-% %         hold on
-% %         plot(SINKdata(frameMaptemp,1),SINKdata(frameMaptemp,2))
-% %         scatter(out.QPOL(1),out.QPOL(2))
-% %         scatter(out.QPOR(1),out.QPOR(2))
-% %         scatter(out.QPW(1,1),out.QPW(1,2))
-% %         scatter(out.QPW(2,1),out.QPW(2,2))
-% %         scatter(out.QPW(3,1),out.QPW(3,2))
-% %         scatter(out.QPW(4,1),out.QPW(4,2))
-% %         [ObjectPos1, ObjectPos2] = getpts(h);
-% %         Objects = cat(2,ObjectPos1,ObjectPos2);
-% %         Object1 = Objects(1,:);
-% %         Object2 = Objects(2,:);
-% %         [cornerPos1, cornerPos2] = getpts(h);
-% %         QPW = cat(2,cornerPos1, cornerPos2);
-% %         close(h);
-% %         
-% %         out.QPW = QPW;
-% %         out.QPOL= Object1;
-% %         out.QPOR= Object2;
-% %         save('CupStats.mat','out')
-% %         
-%     catch       
-%         load('HeadTrackingData.mat');
-%         load('frameMap.mat');
-%         load('badframes.mat')        
-%         frameMaptemp = frameMap(t:end);
-%         QPW = findEdges(SINKdata(frameMaptemp,:));
-%         h = figure;
-%         plot(SINKdata(frameMaptemp,1),SINKdata(frameMaptemp,2))
-%         [ObjectPos1, ObjectPos2] = getpts(h);
-%         Objects = cat(2,ObjectPos1,ObjectPos2);
-%         Object1 = Objects(1,:);
-%         Object2 = Objects(2,:);
-%         close(h);
-%         
-%         out.QPW = QPW;
-%         out.QPOL= Object1;
-%         out.QPOR= Object2;
-%         save('CupStats.mat','out')
-%     end   
+        h = figure;
+        vid = VideoReader('behavCam1.avi');
+        f1 = vid.read(1);
+        h = figure;
+        imshow(f1);
+        hold on
+        plot(SINKdata(frameMaptemp,1),SINKdata(frameMaptemp,2))
+        scatter(out.QPOL(1),out.QPOL(2))
+        scatter(out.QPOR(1),out.QPOR(2))
+        scatter(out.QPW(1,1),out.QPW(1,2))
+        scatter(out.QPW(2,1),out.QPW(2,2))
+        scatter(out.QPW(3,1),out.QPW(3,2))
+        scatter(out.QPW(4,1),out.QPW(4,2))
+        [ObjectPos1, ObjectPos2] = getpts(h);
+        Objects = cat(2,ObjectPos1,ObjectPos2);
+        Object1 = Objects(1,:);
+        Object2 = Objects(2,:);
+        [cornerPos1, cornerPos2,cornerPos3,cornerPos4] = getpts(h);
+        c
+        close(h);
+        
+        out.QPW = QPW;
+        out.QPOL= Object1;
+        out.QPOR= Object2;
+        save('CupStats.mat','out')
+        
+    catch       
+        load('HeadTrackingData.mat');
+        load('frameMap.mat');
+        load('badframes.mat')        
+        frameMaptemp = frameMap(t:end);
+        QPW = findEdges(SINKdata(frameMaptemp,:));
+        h = figure;
+        plot(SINKdata(frameMaptemp,1),SINKdata(frameMaptemp,2))
+        [ObjectPos1, ObjectPos2] = getpts(h);
+        Objects = cat(2,ObjectPos1,ObjectPos2);
+        Object1 = Objects(1,:);
+        Object2 = Objects(2,:);
+        close(h);
+        
+        out.QPW = QPW;
+        out.QPOL= Object1;
+        out.QPOR= Object2;
+        save('CupStats.mat','out')
+    end   
    SocialProximity = SocialProximityFiring_V3(ms,SINKdata,frameMap,out, 5, 3.75, 45, t);
    save('SocialProximity_V2.mat','SocialProximity')
     

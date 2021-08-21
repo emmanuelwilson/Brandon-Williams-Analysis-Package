@@ -127,7 +127,7 @@ function alignNwiseSessions2020(path,nFold)
                 save(outP,'prepped'); 
             end
             mkdir(path,'tempfigs')
-            parfor iteration = 1:iters
+            for iteration = 1:iters
                 try
                     if nonRigid
                         [itter_map, regStruct] = registerCellsNoGUI2020_Auto([upiece{mi} '\Segments' ]);
@@ -135,7 +135,7 @@ function alignNwiseSessions2020(path,nFold)
                         [itter_map, regStruct] = registerCells2020_Auto([upiece{mi} '\Segments' ]);
                     end
                 catch
-                    itter_map = []
+                    itter_map = [];
                     regStruct = [];
                 end
                 itermap{iteration} = itter_map;

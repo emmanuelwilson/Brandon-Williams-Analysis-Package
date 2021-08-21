@@ -23,7 +23,7 @@ function [out]= msEgoCentricRateMapSplitEvenOddParallelSweetMilkSHUFFLE_V4(ms,HD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Author Emmanuel Wilson
 
-name = 'EBCevenOddSplitParallelDeconvolved_Donut3SWEETMILK_D1d2A6_TEST_fix.mat';
+name = 'EBCevenOddSplitParallelDeconvolved_Donut3SWEETMILK_D1d3.mat';
 
 %Set Analysis Distance
 if dimX > dimY

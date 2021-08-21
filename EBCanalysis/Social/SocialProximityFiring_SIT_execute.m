@@ -1,20 +1,44 @@
 
-load('ms.mat');
-load('HeadTrackingData.mat');
-load('frameMap.mat');
-load('badframes.mat')
-frameMaptemp = frameMap;
-frameMaptemp(1:t) = [];
 
-try
+
+% try
     load('SITstartFrame.mat')
-    frameMaptemp = frameMap;
-    frameMaptemp(1:startframe) = [];
+    load('ms.mat');
+    load('HeadTrackingData.mat');
+    load('frameMap.mat');        
+    load('ObjectStatsHab.mat')
+    load('badframes.mat')
+%     frameMaptemp = frameMap(startframe:end);
+% % %     
+% % %     h = figure(1);
+% % %     vid = VideoReader('behavCam1.avi');
+% % %     f1 = vid.read(1);
+% % %     h = figure;
+% % %     imshow(f1);
+% % %     hold on
+% % %     plot(SINKdata(frameMaptemp,1),SINKdata(frameMaptemp,2))
+% % %     scatter(ObjectStats.CentroidOb1(1),ObjectStats.CentroidOb1(2))    
+% % %     scatter(ObjectStats.QPW(1,1),ObjectStats.QPW(1,2))
+% % %     scatter(ObjectStats.QPW(2,1),ObjectStats.QPW(2,2))
+% % %     scatter(ObjectStats.QPW(3,1),ObjectStats.QPW(3,2))
+% % %     scatter(ObjectStats.QPW(4,1),ObjectStats.QPW(4,2))
+% % %     
+% % %     [ObjectPos1, ObjectPos2] = getpts(h);
+% % %     Objects = cat(2,ObjectPos1,ObjectPos2);
+% % %     Object1 = Objects(1,:);
+% % %     [cornerPos1, cornerPos2] = getpts(h);
+% % %     QPW = cat(2,cornerPos1, cornerPos2);
+% % %     
+% % %     
+% % %     frameMaptemp(1:startframe) = [];
     ObjectStats.QPO = ObjectStats.CentroidOb1;
-    SocialProximity = SocialProximityFiring_SIT(ms,SINKdata,frameMap,ObjectStats, 5, 3.75, 45, startframe);
-    save('SocialProximity_V1.mat','SocialProximity')
-catch
-    warning([pwd ' cant analyze'])
+% % %     
+% % %     save('SITstartFrame.mat','startframe','ObjectStats')
+    
+    SocialProximity = SocialProximityFiring_SIT_V2(ms,SINKdata,frameMap,ObjectStats,ObjectStatsHab, 5, 3.75, 45, t,startframe);
+    save('SocialProximity_V1_2.mat','SocialProximity')
+% catch
+%     warning([pwd ' cant analyze'])
 %     pause
 %     QPW = findEdges(SINKdata(frameMaptemp,:));
 %     h = figure;
@@ -26,7 +50,7 @@ catch
 %     ObjectStats.QPW = QPW;
 %     ObjectStats.CentroidOb1 = Object1;    
 %     save('ObjectStats.mat','ObjectStats')
-end
+% end
 % ObjectStats.QPO = ObjectStats.CentroidOb1;
 % SocialProximity = SocialProximityFiring_SIT(ms,SINKdata,frameMap,ObjectStats, 5, 3.75, 45, startframe);
 % save('SocialProximity_V1.mat','SocialProximity')

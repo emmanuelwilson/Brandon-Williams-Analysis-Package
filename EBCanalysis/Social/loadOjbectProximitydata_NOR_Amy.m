@@ -1,4 +1,4 @@
-function out = loadSocialProximitydata_SIT_Amy(p)
+function out = loadOjbectProximitydata_NOR_Amy(p)
 
 paths = genpath(p);
 if ispc
@@ -6,7 +6,7 @@ if ispc
 else
     folders = strsplit(paths,':')';
 end
-socialProxSessions = [];
+objectProxSessions = [];
 exclude = [];
 folderpaths = [];
 mouse = [];
@@ -33,7 +33,7 @@ for i = 1 : length(folders)
                         mouse = newName;
                         sub = newsub;
                         micenames{countM} = mouse;                        
-                        socialProxSessions = cat(2,socialProxSessions,cell(2,1));                        
+                        objectProxSessions = cat(2,objectProxSessions,cell(2,1));                        
                         if isempty(exclude)
                             exclude = cell(2,1);
                         else
@@ -41,7 +41,7 @@ for i = 1 : length(folders)
                         end
                         folderpaths= cat(2,folderpaths,cell(2,1));
                     end               
-                    socialProxSessions{count,countM} = SocialProximity;
+                    objectProxSessions{count,countM} = SocialProximity;
                     if isfield(ms,'exclude')
                         exclude{count,countM} = ms.exclude;
                     end
@@ -53,7 +53,7 @@ for i = 1 : length(folders)
             end
         end
     end
-    out.socialProxSessions = socialProxSessions;
+    out.socialProxSessions = objectProxSessions;
     out.micenames = micenames;
     out.exclude = exclude;
     out.folderpaths= folderpaths;

@@ -5,6 +5,15 @@ if ~isempty(badframes)
     ms.FiltTraces(1:badframes,:) = [];
     ms.deconvolvedSig(1:badframes,:) = [];
 end
+fps = 30;
+mins = 10;
+timeframes = mins*60;
+lframes = timeframes*fps;
+if length(frameMap) > lframes
+    frameMap = frameMap(1:lframes);
+    ms.FiltTraces = ms.FiltTraces(1:lframes,:);
+    ms.deconvolvedSig = ms.deconvolvedSig(1:lframes,:);
+end
 
 maxX = max(Objectstats.QPW(:,1));
 maxY = max(Objectstats.QPW(:,2));
@@ -34,6 +43,10 @@ yv = R*sin(L)';
 
 object1Occupancy = sum(((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=R^2)) - sum(((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=objectPixX^2));
 object2Occupancy = sum(((tracking(:,1)-objCenter2(1)).^2+(tracking(:,2)-objCenter2(2)).^2<=R^2)) - sum(((tracking(:,1)-objCenter2(1)).^2+(tracking(:,2)-objCenter2(2)).^2<=objectPixX^2));
+obj1OccFrames = ((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=R^2) & ~((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=objectPixX^2);
+obj2OccFrames  = ((tracking(:,1)-objCenter2(1)).^2+(tracking(:,2)-objCenter2(2)).^2<=R^2) & ~((tracking(:,1)-objCenter2(1)).^2+(tracking(:,2)-objCenter2(2)).^2<=objectPixX^2);
+objframtemp = cat(2,obj1OccFrames,obj2OccFrames);
+objOccFrames = sum(objframtemp,2);
 totalOccupancy = sum(((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=R^2)) + sum(((tracking(:,1)-objCenter2(1)).^2+(tracking(:,2)-objCenter2(2)).^2<=R^2)) - sum(((tracking(:,1)-objCenter1(1)).^2+(tracking(:,2)-objCenter1(2)).^2<=objectPixX^2)) - sum(((tracking(:,1)-objCenter2(1)).^2+(tracking(:,2)-objCenter2(2)).^2<=objectPixX^2));
 totalFrames = length(frameMap);
 
@@ -68,4 +81,7 @@ out.TotalFrames = totalFrames;
 out.ObjectRadius = objectsizeRad;
 out.ProximityRadius = ROIrad;
 out.FieldSize = [FieldSizex,FieldSizey];
+out.Object1Occ = obj1OccFrames;
+out.Object2Occ = obj2OccFrames;
+out.ObjectOcc = objOccFrames;
 end
